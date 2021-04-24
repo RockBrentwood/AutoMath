@@ -1,0 +1,42 @@
+%% The original 1968 language.
+%	* Prop		:= pn							; TYPE
+%	* p		:= --							; Prop
+%p	* Proof		:= pn							; TYPE
+%	* con		:= pn							; Prop
+%p	* q		:= --							; Prop
+%q	* imp		:= pn							; Prop
+%p	* not		:= imp(p,con)						; Prop
+%q	* tq		:= --							; [tp,Proof(p)] Proof(q)
+%tq	* impintro	:= pn							; Proof(imp(p,q))
+%q	* tp		:= --							; Proof(p)
+%tp	* timp		:= --							; Proof(imp(p,q))
+%timp	* impelim	:= pn							; Proof(q)
+%p	* tnn		:= --							; Proof(not(not(p)))
+%tnn	* notelim	:= pn							; Proof(p)
+%p	* tcon		:= --							; Proof(con)
+%tcon	* conelim	:= notnotelim(impintro(not,con,[tnot,Proof(not)]tcon)	; Proof(p)
+
+// The syntax in the local 2016 version.
+ @ prim type Prop;			// ↦ type Prop;
+   var Prop A;
+   prim type Proof;			// (Prop A) ↦ type Proof(A);
+ @ prim Prop False;			// ↦ Prop False;
+A@ var Prop B;
+   prim Prop Imply;			// (Prop A, Prop B) ↦ Prop Imply(A, B);
+A@ def Prop Not = Imply(A, False);	// (Prop A) ↦ Prop Not(A) = Imply(A, False);
+B@ var [Proof(A) a: Proof(B)] c;
+   prim Proof(Imply(A, B)) ImplyIn;	// (Prop A, Prop B) ↦ Proof(Imply(A, B)) ImplyIn(A, B);
+B@ var Proof(A) a;
+   var Proof(Imply(A, B)) f;
+   prim Proof(B) ImplyEx;		// (Prop A, Prop B) │ (Proof(A) a, Proof(Imply(A, B)) f) ↦ Proof(B) ImplyEx(a, f);
+A@ var Proof(Not(Not(A))) Q;
+   prim Proof(A) NotNotEx;		// (Prop A) │ (Proof(Not(Not(A))) Q) ↦ Proof(A) NotNotEx(Q);
+A@ var Proof(False) 0;
+0@ def Proof(A) FalseEx = NotNotEx(ImplyIn(Not, False, [Proof(Not) not: 0])); // (Prop A) | Proof(False) 0 ↦ Proof(A) FalseEx(0) = NotNotEx(ImplyIn(False, [Proof(Not) _: 0]));
+
+// aut -QZ <This file>
+// 0 beta reduction(s), 1 delta reduction(s), 0 eta reduction(s)
+// 7 + 2 = 9 definitions, 7 + 9 = 16 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

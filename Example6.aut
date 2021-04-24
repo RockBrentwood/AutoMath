@@ -1,0 +1,12 @@
+var type A;
+var type B;
+var type C;
+var type D;
+var [A x, B y, C z: D] E;
+var A a;
+var B b;
+var C c;
+def D F = E<a><b><c>;
+def D G = E<a,b><c>;
+def D H = E<a><b,c>;
+def D I = E<a,b,c>;

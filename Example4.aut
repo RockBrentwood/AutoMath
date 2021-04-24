@@ -1,0 +1,26 @@
+// The first example in de Bruijn aut001.pdf.
+	prim type nat;							// type ℕ;
+@	var nat a;
+	var nat b;
+	prim nat prod;							// ℕ a,b ↦ ℕ prod(a,b);
+@	var nat c;
+	def nat square = prod(c,c);					// ℕ c ↦ ℕ square(c) = prod(c,c);
+	def nat cube = prod(c,square);					// ℕ c ↦ ℕ cube(c) = prod(c,square(c));
+	def nat d = square(square);					// ℕ c ↦ ℕ d(c) = square(square(c));
+@	var nat e;
+	def nat f = d(cube(square(e)));					// ℕ e ↦ ℕ f(e) = d(cube(square(e)));
+@	def [nat _: nat] squaring = [nat x: square(x)];			// [ℕ → ℕ] squaring = [ℕ x: square(x)];
+@	var nat g;
+	var [nat _: nat] h;
+	def nat i = h<g>;						// ℕ g, [ℕ → ℕ] h ↦ ℕ i(g,h) = h<g>
+	var nat j;
+	def [nat _: nat] k = [nat x: prod(square(x),prod(i,j))];	// ℕ g, [ℕ → ℕ] h, ℕ j ↦ [ℕ → ℕ] k(g,h,j) = [ℕ x: prod(square(x),prod(i(g,h),j))];
+	def nat l = k<j>;						// ℕ g, [ℕ → ℕ] h, ℕ j ↦ ℕ l(g,h,j) = k(g,h,j)<j>;
+h@	def [nat _: nat] m = k(i);					// ℕ g, [ℕ → ℕ] h ↦ [ℕ → ℕ] m(g,h) = k(g,h,i(g,h));
+
+// aut -QZ <This file>
+// 2 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+// 2 + 9 = 11 definitions, 7 + 11 = 18 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

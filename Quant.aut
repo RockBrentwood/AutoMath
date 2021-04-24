@@ -1,0 +1,75 @@
+ @ var prop A;
+   var prop B;
+   def prop Imply = [A a: B];
+// prop A,B ↦ prop A ⊃ B = (Πa:A) B = [A → B];
+
+ @ prim prop No;
+// prop ⊥;
+
+A@ def prop Not = Imply(No);
+// prop A ↦ prop ¬A = A ⊃ ⊥;
+
+ @ var type T;
+   var [T t: prop] P;
+   prim prop All; //(@) In deBruijn's formulation: def prop All = P;
+// type T │ [T → prop] P ↦ prop ∀(P)[ = P];
+   var All a;
+   prim P DeAll; //(@) In deBruijn's formulation: def P DeAll = a;
+// type T, [T → prop] P │ ∀P a ↦ P De∀(a)[ = a];
+   var T t;
+   def P<t> AllE = DeAll<t>;
+// type T, [T → prop] P │ ∀P a, T t ↦ P<t> ∀_E(a,t) = De∀(a)<t>;
+P@ var P p;
+   prim All EnAll; //(@) In deBruijn's formulation: def All EnAll = P;
+// type T, [T → prop] P │ P p ↦ ∀P En∀(p);
+
+P@ def [T t: prop] Any = [T t: Not(P<t>)];
+   def prop None = All(Any);
+// type T │ [T → prop] P ↦ prop ∄P = ∀(Πt:T ¬P<t>);
+   def prop Some = Not(None);
+// type T │ [T → prop] P ↦ prop ∃P = ¬∄P;
+t@ var P<t> pt;
+   def Some SomeI = [None n: AllE(Any,n,t)<pt>];
+// type T, [T → prop] P │ T t, P<t> pt ↦ ∃P ∃_I(t,pt) = (λn:∄P) ∀_E(n,t)<pt>;
+
+P@ var prop C;
+
+// ⊢ C⊃P(t), for all t ⇒ ⊢ C⊃(∀x)P(x)
+// type T, [T → prop] P, prop C | (Πt:T)(C⊃P<t>) f ↦ C⊃∀P Λ(f);
+C@ var [T t: Imply(C,P<t>)] f;
+   def Imply(C,All(P)) Lam = [C c: EnAll([T t: f<t,c>])];
+
+// ⊢ C⊃(∀x)P(x) ⇒ ⊢ C⊃P(t), for all t
+// type T, [T → prop] P, prop C | C⊃∀P h ↦ (Πt:T)(C⊃P<t>) V(h);
+// type T, [T → prop] P, prop C | C⊃∀P h, T t ↦ C⊃P<t> VE(h,t) = V(h)<t>;
+   var Imply(C, All(P)) h;
+   def [T t: Imply(C,P<t>)] Vee = [T t, C c: AllE(h<c>, t)];
+   var T t;
+   def Imply(C,P<t>) VeeE = [C c: AllE(h<c>, t)];
+
+// Vee(Lam(f))
+// = Vee([C c: EnAll([T t: f<t,c>])])
+// = [T t, C c: AllE([C c: EnAll([T t: f<t,c>])]<c>, t)]
+// = [T t, C c: DeAll([C c: EnAll([T t: f<t,c>])]<c>)<t>]
+// = [T t, C c: DeAll(EnAll([T t: f<t,c>]))<t>]
+// = [T t, C c: [T t: f<t,c>]<t>] //(@) In deBruijn's formulation.
+// = [T t, C c: f<t,c>]
+// = [T t: f<t>]
+// = f
+
+// Lam(Vee(h))
+// = Lam([T t, C c: AllE(h<c>, t)])
+// = [C c: EnAll([T t: [T t, C c: AllE(h<c>, t)]<t,c>])]
+// = [C c: EnAll([T t: [T t, C c: DeAll(h<c>)<t>]<t,c>])]
+// = [C c: EnAll([T t: [C c: DeAll(h<c>)<t>]<c>])]
+// = [C c: EnAll([T t: DeAll(h<c>)<t>])]
+// = [C c: EnAll(DeAll(h<c>))]
+// = [C c: h<c>] //(@) In deBruijn's formulation.
+// = h
+
+// aut -QZ <This file>
+// 14 beta reduction(s), 19 delta reduction(s), 1 eta reduction(s)
+// 4 + 10 = 14 definitions, 12 + 14 = 26 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

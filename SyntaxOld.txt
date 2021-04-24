@@ -1,0 +1,107 @@
+The Syntax of PAL and AUTOMATH
+by N.G. de Bruijn
+Technische Hogeschool, Eindhoven
+Onderafdeling del Wiskunde.
+Notitie 32, d.d. 9 april 1970.
+
+PAL and AUTOMATH have been defined in [1] and [2].
+These reports do not contain of a separate survey of these languages.
+Here we present such a survey for slight modifications of these languages.
+The modifications consist of:
+(1)	instead of indicators we write indicator strings,
+(2)	parts of a line are separated by *,
+(3)	lines are separated by +,
+(4)	names for:
+		constants a: a₀, a₁, a₂, ⋯,
+		variables x: x₀, x₁, x₂, ⋯, and
+		dummy variables t: t₀, t₁, t₂, ⋯
+	have to be taken from three disjoint lexical classes.
+	(#) the author said ‟infinite lists” in places of ‟lexical classes”.
+
+The basic symbols are, besides the names mentioned under (4):
+	+ * := PN EB type , ( ) { } [ ].
+
+The following syntax is the one of AUTOMATH; we get the syntax of PAL if we omit the line marked [AUTOMATH].
+(#) The original said ‟everything below the dotted horizontal line” in place of ‟the line marked [AUTOMATH]”.
+
+	Book → Line*
+	Line → Ind «*» Def «*» Cat
+	Ind → x*
+	Def → a «:=» Ex | a «:=» «PN» | x «:=» «EB»
+	Cat → «type» | Ex
+	Ex → a | x | a «(» Ex («,» Ex)* «)»
+	Ex → t | «{» Ex «}» Ex | «[» t «,» Ex «]» Ex	[AUTOMATH]
+
+References:
+[1]	N. G. de Bruijn, Automath, a language for mathematics, THE-report 68-WSK-05 (1968) Technological University, Eindhoven.
+[2]	N. G. de Bruijn, The mathematical language Automath, its usage, and some of its extensions.
+	Appears as a part of: Proceedings of the Symposium on Automatic Demonstration (IRIA, Versailles, December 1968), in the Springer Lecture Notes Series
+
+EDITOR'S NOTE:
+In the currently-implemented syntax, the lines are written:
+	* a := E * C		⇔	@ def C a = E;
+	* a := PN * C		⇔	@ prim C a;
+	* a := EB * C		⇔	@ var C a;
+An "Ind" may consists only of 0 or 1 x's, so only 0 or 1 x's may precede the @ in a line.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The older syntax in the earlier papers was:
+	Book → Line*
+	Line → Ind Id Def Cat
+	Ind → 0 | x
+	Id → x
+	Def → Ex | «PN» | «--»
+	Cat → Ex | «type»
+with the following constraints and definitions:
+∙	Id:
+	―	Id is unique to each line, and is called a ‟proper identifier”
+∙	Def:
+	―	Id is a ‟block opener” or ‟free variable” for a «--» line
+	―	Id is a ‟primitive notion” for a «PN» line.
+	―	Id is a ‟compound notion” for an Ex line.
+		Ex may have only proper identifiers from previous lines, bound variables and the characters ,(){}[].
+∙	Cat:
+	―	Id is a ‟type” for a ‟type” line
+	―	Id is an ‟object name” (including ‟bound variables”) for an Ex line.
+∙	Ind: Lays out the branching structure of a definition tree with 0 the root.
+	―	Id must be the block opener of a previous line
+
+Example:
+	0	a	PN	type
+	0	x	--	..
+	0	b	..	..
+	x	c	PN	type
+	x	y	--	type
+	y	z	--	..
+	y	d	..	..
+	0	e	..	..
+	x	w	--	..
+	w	f	..	type
+	y	g	..	..
+The tree has maximal branches
+	0 a
+	0 b
+	0 e
+	0 x c
+	0 x w f
+	0 x y d
+	0 x y g
+	0 x y z
+None of the free variables w, x, y are endpoints on the branching just z; the primitive notions a, c and the compound notions b, d, e, f, g.
+
+The old syntax versus the newer syntax is exemplified by the following,
+along with an indication of what the definitions would look like in a more mathematical format with all the parameters made explicit.
+	0	nat	:=	PN		type		@	prim type nat;		// nat:type;
+	0	real	:=	PN		type			prim type real;		// real:type;
+	0	a	:=	--		real			var real a;
+	a	b	:=	--		real			var real b;
+	b	prod	:=	PN		real			prim real prod;		// a,b:real ↦ prod(a,b):real;
+	0	n	:=	--		nat		@	var nat n;
+	n	x	:=	--		real			var real x;
+	x	power	:=	PN		real			prim real power;	// n:nat, x:real ↦ power(n,x):real;
+	n	y	:=	--		real		n@	var real y;
+	y	d	:=	power(n,y)	real			def real d = power;	// n:nat, y:real ↦ d(n,y) ≡ power(n,y):real;
+	y	e	:=	prod(d,y)	real			def real e = prod(d,y);	// n:nat, y:real ↦ e(n,y) ≡ prod(d(n,y),y):real;
+	y	f	:=	prod(d,d)	real			def real f = prod(d,d);	// n:nat, y:real ↦ f(n,y) ≡ prod(d(n,y),d(n,y)):real;
+	y	g	:=	e(d)		real			def real g = e(d);	// n:nat, y:real ↦ g(n,y) ≡ e(d(n,y)):real;

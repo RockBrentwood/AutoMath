@@ -1,0 +1,127 @@
+// Notes about the local 2016 revision of AUTOMATH:
+// Types and propositions are treated the same, so the keywords "type" and "prop" are interchangeable.
+
+// var T x; declares a variable x of type T.
+// var P x; stipulates P as hypothesis x.
+// prim T c; declares a function or constant c of type T.
+// prim P c; postulates P as axiom c.
+// def T c = E; defines a function or constant c of type T to be given by expression E.
+// def P c = E; establishes P as theorem c with proof E.
+// The parameters of c consists of the list of variables that make up c's context.
+// The constant c or function call c(e,...,e) is "completed" by adding parameters are left unmentioned.
+
+// @ is used to introduce empty contexts.
+// Variables declared in a context hold force until the context is changed.
+// V@ is used to resume a context at the point where the variable V was last declared.
+
+// C<B> and [T x: A] are notations respectively for function application C(B) and typed lambda abstraction (λx∈T) A.
+// When read as propositions, these are respectively applications of the modus ponens and deduction rules.
+
+// (Typed) lambda abstraction and function application are characterized by the following properties:
+// The α-rule is that [T x: ‹…x…›] = [T y: ‹…y…›], provided that y is not a free variable in ‹…x…›.
+// The β-rule is that [T x: ‹…x…›]<B> = ‹…B…›, provided that ‹B› has type T and that none of B's free variables become bound in ‹…B…›.
+// The η-rule is that [T x: A<x>] = A, provided that x is not a free variable in A.
+
+// An attempt to embody an extended version of the Lambek-Scott category-theoretic treatment of the Curry-Howard correspondence
+// within the framework of AutoMath. The extension includes assertions and queries,
+// and includes "deny" and "unless" operators, dual respectively to "refute" and "if".
+ @ var type A;		// Let A denote a type for what follows.
+   var type B;		// Let B denote a type for what follows.
+   var type C;		// Let C denote a type for what follows.
+A@ var [A x: type] P;	// Let P denote an A-predicate; i.e. for all x of type A, P(x) is a type.
+ @ prim type nul;	// 0		false
+   prim type one;	// 1		true
+A@ prim prop ad;	// A.		⊢ A		= true ⊢ A	Assertions
+   prim prop de;	// A?		A ⊢		= A ⊢ false	Counter-factual queries.
+   prim type un;	// ~A		deny A		= true - A	Weak negation (as denial).
+   prim type no;	// ¬A		refute A	= false^A	Strong negation (as refutation).
+B@ prim prop arr;	// A → B	A ⊢ B				Inference arrow.
+   prim type mul;	// A × B	A and B
+   prim type add;	// A + B	A or B
+   prim type exp;	// A^B		A if B
+   prim type sub;	// A - B	A unless B
+   prim type iff;	// A ≡ B	A iff B		= (A if B) and (B if A)
+   prim type xor;	// A ≢ B	A xor B		= (A unless B) or (B unless A)
+P@ prim type all;	// all(x:A | P)	for all (x in A) P
+   prim type any;	// any(x:A | P)	for any (x in A) P
+
+// The rules
+A@ var arr(one, A) f; prim ad(A) deref;	// f: 1 → A	⇒ *f: A
+A@ var arr(A, nul) f; prim de(A) defer;	// f: A → 0	⇒ f&: A?
+A@ var ad(A) a; prim arr(one, A) enref;	// a: A		⇒ &a: 1 → A
+A@ var de(A) a; prim arr(A, nul) enfer;	// a: A?	⇒ a*: A → 0
+
+A@ prim arr(A, one) enone;	// <>_A: A → 1
+A@ prim arr(nul, A) ennul;	// []_A: 0 → A
+
+C@ var arr(C, A) f; var arr(C, B) g; prim arr(C, mul(A, B)) enjoin;	// f: C → A, g: C → B ⇒ <f,g>: C → A × B
+C@ var arr(A, C) f; var arr(B, C) g; prim arr(add(A, B), C) enmeet;	// f: A → C, g; B → C ⇒ [f,g]: A + B → C
+C@ var arr(C, mul(A, B)) h; prim arr(C, A) dejoin0; prim arr(C, B) dejoin1; // h: C → A × B ⇒ T h: C → A; F h: C → B
+C@ var arr(add(A, B), C) h; prim arr(A, C) demeet0; prim arr(B, C) demeet1; // h: A + B → C ⇒ h T: A → C; h F: B → C
+
+C@ var arr(mul(C, A), B) f; prim arr(C, exp(B, A)) encur;	// f: C × A → B	⇒ ^f: C → B^A
+C@ var arr(A, add(B, C)) f; prim arr(sub(A, B), C) enclo;	// f: A → B + C	⇒ fv: A - B → C
+C@ var arr(C, exp(B, A)) g; prim arr(mul(C, A), B) decur;	// g: C → B^A	⇒ vg: C × A → B
+C@ var arr(sub(A, B), C) g; prim arr(A, add(B, C)) declo;	// g: A - B → C	⇒ g^: A → B + C
+
+B@ var de(mul(B, A)) c; prim arr(B, no(A)) enno;	// c: B × A?	⇒ nc: B → ¬A
+B@ var ad(add(A, B)) c; prim arr(un(A), B) enun;	// c: A + B	⇒ cu: ~A → B
+B@ var arr(B, no(A)) f; prim de(mul(B, A)) deno;	// f: B → ¬A	⇒ uc: B × A?
+B@ var arr(un(A), B) f; prim ad(add(A, B)) deun;	// f: ~A → B	⇒ fn: A + B.
+
+// f: C × A → B; g: C × B → A	⇒ ^(f,g): C → A≡B
+C@ var arr(mul(C, A), B) f; var arr(mul(C, B), A) g; prim arr(C, iff(A, B)) eniff;
+// h: C → A≡B	⇒ vT h: C × A → B, vF h: C × B → A
+C@ var arr(C, iff(A, B)) h; prim arr(mul(C, A), B) deiff0; prim arr(mul(C, B), A) deiff1;
+
+// f: A → B + C; g: B → A + C	⇒ (f,g)v: A≢B → C
+C@ var arr(A, add(B, C)) f; var arr(B, add(A, C)) g; prim arr(xor(A, B), C) enxor;
+// h: A≢B → C	⇒ h T^: A → B + C, h F^: B → A + C
+C@ var arr(xor(A, B), C) h; prim arr(A, add(B, C)) dexor0; prim arr(B, add(A, C)) dexor1;
+
+P@ var type C;
+// h: C → all(x:A | P_x)	⇒ π_a h: A → P_a, for all a: A
+C@ var arr(C, all) h; var A a; prim P<a> deall;
+// f_x: C → P_x (x: A)		⇒ <x:A | f_x>: C → all(x:A | P_x)
+C@ var [A x: arr(C, P<x>)] f; prim arr(C, all) enall;
+
+// h: any(x:A | P_x) → C	⇒ h σ_a: P_a → A, for all a: A
+C@ var arr(any, C) h; var A a; prim P<a> deany;
+// f_x: P_x → C (x: A)		⇒ [f_x | x:A]: any(x:A | P_x) → C
+C@ var [A x: arr(P<x>, C)] f; prim arr(any, C) enany;
+
+// 1_A: A → A
+A@ prim arr(A, A) at;
+B@ var type C;
+// f: A → B, g: B → C		⇒ g.f: A → C
+C@ var arr(A, B) f; var arr(B, C) g; prim arr(A, C) to;
+
+@ var type C; var [C x: type] A; var [C x: type] B;
+// f_x: A_x → B_x for x:C	⇒ f_c: A_c → B_c, for all terms c:C.
+B@ var [C x: arr(A<x>, B<x>)] f; var C c; def arr(A<c>, B<c>) subst = f<c>;
+
+// Lambek's κ-calculus cannot be done with the categorical logic based on a bi-Heyting lattice.
+// For the subtraction operator, one has a one-to-one correspondence
+//	f_x: C → A + D	⇔	g_x: C - A → D
+//	f_x = g_x ^, g_x = f_x v, g_x ^ v = g_x, f_x v ^ = f_x
+// But then, assuming F = (κx: 1 → B) f_x and G = (κx: 1 → B) g_x, this yields the types
+//	F: C × B → A + D, G: (C - A) × B → D
+// But these are not generally equivalent in a biHeyting logic. In particular, for linear orderings with 0 < b ≤ a < 1, one has
+//	A = a, B = b, C = 1, D = 0
+//	C × B = 1 × b = b; A + D = a + 0 = a; so F: C × B → A + D is true
+//	(C - A) × B = 1 × b = b, D = 0; so G: (C - A) × B → D is false.
+//	(C × B) - A = (1 × b) - a = b - a = 0
+//	(C - A) × B = (1 - a) × b = 1 × b = b
+// So, there is no way to express F in terms of G, and no way to reduce (κx: 1 → B) (g_x ^) in terms of (κx: 1 → B) g_x.
+// 
+// If b: 1 → B, then the β and η rules are given by
+//	If b: 1 → B then L_c(b) = <1_C, b o <>_C>: C → C × B
+//	If f: C → A then ((κx: 1 → B) f_x) o L_c(b) = f_b
+//	If F: C × B → A then (κx. F o L_c(x)) = F
+
+// aut -QZ <This file>
+// 7 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+// 47 + 1 = 48 definitions, 43 + 48 = 91 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

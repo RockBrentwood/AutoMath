@@ -1,0 +1,76 @@
+./aut -QZ GrundLagen
+8583 beta reduction(s), 20003 delta reduction(s), 2 eta reduction(s)
+32 + 6880 = 6912 definitions, 4298 + 6912 = 11210 lines
+98 blocks = 3133 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ GrundLagenPn
+10 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+32 + 19 = 51 definitions, 38 + 51 = 89 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ CatLog
+18 beta reduction(s), 94 delta reduction(s), 0 eta reduction(s)
+32 + 108 = 140 definitions, 61 + 140 = 201 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Example1
+0 beta reduction(s), 1 delta reduction(s), 0 eta reduction(s)
+7 + 2 = 9 definitions, 7 + 9 = 16 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Example2
+5 beta reduction(s), 10 delta reduction(s), 0 eta reduction(s)
+2 + 3 = 5 definitions, 2 + 5 = 7 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Example3
+7 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+47 + 1 = 48 definitions, 43 + 48 = 91 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Example4
+2 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 9 = 11 definitions, 7 + 11 = 18 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Example5
+9 beta reduction(s), 1 delta reduction(s), 0 eta reduction(s)
+10 + 3 = 13 definitions, 8 + 13 = 21 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Example6
+24 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 4 = 4 definitions, 8 + 4 = 12 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Quant
+14 beta reduction(s), 19 delta reduction(s), 1 eta reduction(s)
+4 + 10 = 14 definitions, 12 + 14 = 26 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
+./aut -QZ Torsor
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+13 + 6 = 19 definitions, 14 + 19 = 33 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

@@ -1,0 +1,123 @@
+Notes on the revised syntax.
+To facilitate later developments, a few changes were made in 2016 in the local version of the original ‟aut” program.
+
+The syntax now used (which is given in Lexical.l / Lexical.c and Syntax.y / Syntax.c) now has the following categories:
+S: Statements
+T: Types
+E: Expressions
+X: The (possibly scoped) name of a variable, constant or operator.
+x: The unscoped name of a variable, constant or operator.
+
+Program → S*			―	0, 1, 2 or more statements
+
+S → «+» x			―	Open a new paragraph named x
+S → «-» x			―	Close the current paragraph (which should be named x)
+S → «.»				―	Close the current paragraph
+S → «@»				―	Set a new scope or ‟context”
+S → X «@»			―	Continue the scope past the point where the most recent definition for variable X occurred.
+					This removes all the intervening definitions of variables from the current scope.
+S → «var» T x «;»		―	Declare x as a variable of type T.
+S → «prim» T x «;»		―	Declare x as a constant of type T.
+S → «def» T x «=» [«~»] E «;»	―	Define x as an operator returning the value E of type T.
+					The parameters of x consist of ALL the variables that lie in the context of this definition.
+					If the value E is prefixed by «~» then it is understood that the definition will not be expanded to E.
+					This treats the definition as a conjecture, with E as a suggested proof.
+					Apart from the listing of the expression E, it is equivalent to just issuing a ‟conjecture” declaration «def» T x «;».
+
+T → «prop»			―	The ‟proposition” kind
+T → «type»			―	The ‟type” kind. Both «prop» and «type» are treated the same in this implementation.
+T → E				―	A generic type expression.
+
+E → X				―	A variable.
+E → X «(» [E «,» … «,» E] «)»	―	A constant or operator with some or all of its arguments made explicit.
+					Missing arguments occur on the left and are taken from the context where the operator was defined.
+
+E → E «<» [E «,» … «,» E] «>»	―	A function application.
+					E<> = E, E<F,F'> = E<F><F'>, E<F,F',F"> = E<F><F'><F">, ...
+E → «[» L E «]»			―	A function abstraction.
+					[: E] = E, [T x, T' x': E] = [T x: [T' x': E]], [T x, T' x', T" x": E] = [T x: [T' x': [T" x": E]]], etc.
+
+L → [T x «,» … «,» T x] «:»	―	The function abstraction lambda.
+
+X → x				―	A simple name, taken from the current paragraph or from a paragraph presiding above it
+X → x «{» x «.» x … «.» x «}»	―	A name taken from an absolute paragraph (/x/x/…/x).
+X → x «{» «.» x … «.» x «}»	―	A name taken from a relative paragraph (Current/x/…/x).
+
+The correspondence of types to propositions is as follows:
+•	A variable of type T corresponds to taking proposition T as an hypothesis.
+•	A constant of type T corresponds to taking proposition T as an axiom.
+•	A operator that takes arguments of types T₀,T₁,…,T_n and returns a result of type T corresponds to a proof of the inference T₀,T₁,…,T_n ⊢ T;
+	which establishes the result T from hypotheses T₀,T₁,…,T_n.
+∙	In practice, there is a stratification of two or more levels, which may be denoted (in the case of a two-level stratification) as:
+		P₀,P₁,⋯,P_m │ T₀,T₁,⋯,T_n ⊢ T;
+	in which (T₀,T₁,⋯,T_n) ↦ T is treated as a polymorphic operator parametrized by P₀,P₁,⋯,P_m.
+•	Each context corresponds to the stipulation of 0, 1, 2 or more hypotheses.
+•	An operator X for T₀,T₁,…,T_m,….T_n ⊢ T applied to the last n-m parameters e_{m+1},…,e_n
+	corresponds to discharging the last n-m parameters to produce a reduced operator X(e_{m+1},…,e_n) for T₀,T₁,…,T_m ⊢ T.
+	The remaining parameters are taken from the last m hypotheses in the current context.
+•	The type [T x: U_x] corresponds to the universal (∀x ∈ T) U(x)
+•	The type [T x: U], when U is independent of x, corresponds to the conditional T → U = if T then U.
+•	Function application corresponds to ‟modus ponens”:
+	in the application e<f>, if e has type T → U and f has type T, then e<f> has type U.
+•	Function application also corresponds to ‟instantiation” of universals:
+	in the application e<f>, if e has type (∀x ∈ T) U_x, and f has type T, then e<f> has type U_f.
+•	Function abstraction [T x: e] corresponds to the ‟deduction rule”:
+	in the abstraction [T x: e], if e is independent of x and has type U, then [T: e] has type T → U.
+•	Function abstraction [T x: e_x] also corresponds to the ‟generalization rule”:
+	in the abstraction [T x: e_x], if e_x has type U_x, then [T x: e_x] has type (∀x ∈ T) U_x.
+
+The α-rule is the conversion [T x: e_x] → [T y: e_y] that changes the names of bound variables.
+The β-rule is the conversion [T x: e_x]<f> → e_f.
+The η-rule is the conversion [T x: e<x>] → e, where e is independent of x.
+The δ-rule is the application of a defined operator to its arguments.
+These rules are carried out as part of the computation that AUTOMATH carries out.
+They correspond to proof-conversion/optimization rules.
+
+The combination (α,β) is the pure Lambda calculus.
+The lambda calculus is ‟extensional” if it includes the η rule and is ‟applied” rather than ‟pure” if it includes the δ rule.
+
+Other systems, like Martin-Löf may include a ‟sum” type:
+	(Σ T x) U_x	↔	(∃x ∈ T) U_x
+	(Σ T x) U	↔	T ∧ U, when U is independent of x
+populated by expressions of the form (e,f), where e has type T, and f has type U_e (or type U, if U is independent of x).
+
+In the first case, this reads as:
+	• e is a case in point of an object of type T where U(x) is true (i.e. a solution x = e to the problem posed by U(x)).
+In the second case, it reads as:
+	• e is a proof of T, f is a proof of U, which together form a proof (e,f) of the conjunction T and U.
+
+There is no built-in sum type in AUTOMATH.
+
+──────────────────────────────────────────────────────────────
+
+Version 4.3 syntax versus version 4.2 syntax:
+∙	Abstractions:
+	Version 4.3	Version 4.2
+	[: E]		E
+	[T x; E]	[x,T]E
+	[T x, T' x': E]	[x,T][x',T']E
+	⋯
+∙	Applications:
+	Version 4.3	Version 4.2
+	E<>		E
+	E<F>		<F>E
+	E<F,F'>		<F'><F>E
+	⋯
+
+Contexts are defined, updated and used in the following ways:
+∙	$C is the current context, initially set to the empty list [].
+∙	C[x] is the context associated with the last declaration of "x", or the empty list [] if there was no previous declaration.
+∙	var T x; performs the updates C[x] = $C = $C:[x:T].
+∙	prim T x; declares the following operator x: $C → T.
+∙	def T x; declares the following operator x: $C → T.
+∙	def T x = E; defines the following operator x: $C ↦ T E and verifies $C ⊢ E:T.
+∙	For the "var", "def" and "prim" statements $C must not contain any declaration of x.
+
+Definitions and declarations are subject to the following conditions:
+∙	For "prim T x;" declarations, "x" cannot match any previously-declared/defined operator.
+∙	For "def T x[ = E];" declarations, "x" cannot match any previously-declared/defined operator,
+	except a declaration "def T' x", where T = T' is definitionally true.
+∙	For "def T x = E;" definitions, E cannot use any definition made after any preceding "def T x;" declaration.
+∙	All "def T x;" declarations must be accmompanied, at some point, by a matching definition "def T x = E;"
+∙	The "def T x;" declaration plays the role of a "conjecture".
+	It is also a hook for theorem provers: unresolved "def" declarations are statements that may be passed onto theorem provers.

@@ -1,0 +1,38 @@
+// The second example in de Bruijn aut001.pdf, with some instances of «type» lifted to «prop».
+// Set up for natural numbers.
+@	prim type bool;		// type bool;
+	var bool b;
+	prim prop Valid;	// bool b ↦ prop Valid(b);
+@	prim type nat;		// type ℕ;
+	prim nat 0;		// ℕ 0;
+	var nat n;
+	prim nat succ;		// ℕ n ↦ ℕ succ(n);
+
+// Illustrating an operator being internalized as a function.
+@	def [nat _: nat] Succ = [nat n: succ(n)];
+
+// Set up for the axiom of induction.
+@	var [nat _: bool] P;
+	var nat m;
+	def prop Step = [Valid(P<m>) _: Valid(P<succ(m)>)];	// [ℕ → bool] P, ℕ m ↦ prop Step(P,m) = [Valid(P<m>) → Valid(P<succ(m)>)];
+P@	var Valid(P<0>) if;
+	var [nat x: Step(x)] assume;
+	prim [nat x: Valid(P<x>)] induction;			// [ℕ → bool] P, Valid(P<0>) if, [ℕ x: Step(P,x)] assume ↦ [ℕ x: Valid(P<x>)] induction(P,if,assume);
+
+// Application of the axiom of induction.
+// "Definition" lines that are stubs meant to be filled elsewhere will be listed here as constant lines, with "= ⋯" in comments.
+@	var nat h;
+	prim bool Q;						// ℕ h ↦ bool Q(h) = ⋯;
+	var Valid(Q) when;
+	prim Valid(Q(succ(h))) then;				// ℕ h, Valid(Q(h)) when ↦ Valid(Q(succ(h))) then(h,when) = ⋯;
+@	prim Valid(Q(0)) also;					// Valid(Q(0)) also = ⋯;
+	prim nat r;						// ℕ r;
+//	Valid(Q(r)) now = induction([ℕ h: Q(h)], also, [ℕ h: [Valid(Q(h)) when: then(h,when)]])<r>;
+	def Valid(Q(r)) now = induction([nat h: Q(h)], also, [nat h: [Valid(Q(h)) when: then(h,when)]])<r>;
+
+// aut -QZ <This file>
+// 9 beta reduction(s), 1 delta reduction(s), 0 eta reduction(s)
+// 10 + 3 = 13 definitions, 8 + 13 = 21 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

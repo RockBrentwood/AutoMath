@@ -1,0 +1,7 @@
+This is based on AutoMath version 4.2, created 1999/01/07 21:31:21 (local time) by Freek Wiedijk.
+It may be found here http://www.cs.ru.nl/~freek/aut/
+
+The syntax has been modified and generalized; with further changes planned (e.g. UTF-8 support, unification-based polymorphism, infix operators, etc.)
+
+The main test file is GrundLagen.aut, which contains (in the modified syntax) the AUTOMATH formalization of a monograph on real analysis;
+which is described in further detail in the thesis under AUT069 at the AUTOMATH archive https://www.win.tue.nl/automath/.

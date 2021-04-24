@@ -1,0 +1,57 @@
+ @ prim type T;
+ @ var T a; var T b; var T c; var T d; var T e;		// Let a, b, c, d, e: T for what follows.
+c@ prim T P;						// Let P(a,b,c) denote the ternary operation a, b, c: T ↦ abc: T.
+
+// The usual rules for equality.
+b@ prim prop Is;					// Let Is(a, b) denote the proposition a = b.
+a@ prim Is(a, a) IsR;					// ⊢ IsR: a = a. Reflexivity.
+b@ var Is f; prim Is(b, a) IsS;				// f: a = b ⊢ IsS(f): b = a. Symmetry.
+c@ var Is(a, b) f; var Is(b, c) g; prim Is(a, c) IsT;	// f: a = b, g: b = c ⊢ IsT(f, g): a = c. Transitivity.
+d@ var Is(a, d) f; prim Is(P, P(d,b,c)) Pa;		// f: a = d ⊢ Pa(f): abc = dbc. Congruence for operand a.
+d@ var Is(b, d) f; prim Is(P, P(a,d,c)) Pb;		// f: b = d ⊢ Pb(f): abc = adc. Congruence for operand b.
+d@ var Is(c, d) f; prim Is(P, P(a,b,d)) Pc;		// f; c = d ⊢ Pc(f): abc = abd. Congruence for operand c.
+
+d@ var Is(a, b) f; var Is(b, c) g; var Is(c, d) h;
+   def Is(a, d) IsT3 = IsT(a,c,d,IsT(a,b,c,f,g),h);	// f: a = b, g: b = c, h: c = d ⊢ IsT3(f,g,h): a = d
+
+// The torsor axioms
+b@ prim Is(P(a,a,b), b) A0;			// Axiom A0: aab = b
+b@ prim Is(P(a,b,b), a) A1;			// Axiom A1: abb = a
+e@ prim Is(P(P(c),d,e), P(P(c,d,e))) A2;	// Axiom A2: (abc)de = ab(cde)
+c@ prim Is(P(a,b,c),P(c,b,a)) A3;		// Axiom A3: abc = cba -- for Abelian torsors.
+
+b@ def Is(b, P(a,a,b)) A0i = IsS(P(a,a,b), b, A0);	// Lemma A0i: b = aab
+b@ def Is(a, P(a,b,b)) A1i = IsS(P(a,b,b), a, A1);	// Lemma A1i: a = abb
+e@ def Is(P(P(c,d,e)), P(P(c),d,e)) A2i =
+	IsS(P(P(c),d,e), P(P(c,d,e)), A2);	// Lemma A2i: ab(cde) = (abc)de
+
+// Lemma L0: a = (abc)d(dcb)
+// Proof: a = abb = ab(ccb) = ab((cdd)cb) = ab(cd(dcb)) = (abc)d(dcb)
+c@ def Is(c, P(P(b,a,c)))		// Lemma L0a: c =[A0i]= aac =[A1i]= (abb)ac =[A2]= ab(bac)
+	L0a = IsT3(
+		c, P(a,c), P(P(b),a,c), P(P(b,a,c)),
+		A0i(c), Pa(a,c,P(b),A1i), A2(b,a,c)
+	);
+d@ def Is(a, P(P(a,b,c),d,P(d,c,b)))	// Lemma L0: a =[A1i]= abb =[L0a]= ab(cd(dcb)) =[A2]= (abc)d(dcb)
+	L0 = IsT3(
+		a, P(b), P(P(c,d,P(d,c,b))), P(P,d,P(d,c,b)),
+		A1i, Pc(b,P(c,d,P(d,c,b)),L0a(c,d,b)), A2i(P(d,c,b))
+	);
+
+// Not yet implemented:
+
+// Theorem T0: (abc)de = a(dcb)e
+// Proof: a(dcb)e =[L0]= ((abc)d(dcb))(dcb)e =[A2]= (abc)d((dcb)(dcb)e) =[A0]= (abc)de.
+
+// Lemma L1: e = (dcb)b(cde).
+// Proof: e =[A0]= dde =[A1]= (dcc)de =[A0]= (dc(bbc))de =[A2]= ((dcb)bc)de =[A2]= (dcb)b(cde)
+
+// Theorem T1: a(dcb)e = ab(cde)
+// Proof: a(dcb)e =[L1]= a(dcb)((dcb)b(cde)) =[A2]= (a(dcb)(dcb))b(cde) =[A1]= ab(cde).
+
+// aut -QZ <This file>
+// 0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+// 13 + 6 = 19 definitions, 14 + 19 = 33 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

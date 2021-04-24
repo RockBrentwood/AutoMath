@@ -1,0 +1,42 @@
+// Notes about the local 2016 version of AUTOMATH:
+// var T x; declares a variable x of type T.
+// prim T c; declares a function or constant c of type T.
+// def T c = E; defines a function or constant c of type T to be given by expression E.
+// The parameters of c consists of the list of variables that make up c's context.
+// The constant c or function call c(e,...,e) is "completed" by adding the parameters that are left unmentioned.
+
+// @ is used to introduce empty contexts.
+// Variables declared in a context hold force until the context is changed.
+// V@ is used to resume a context at the point where the variable V was last declared.
+
+// +x opens/reopens a namespace
+// -x closes a namespace
+// . closes the current namespace
+// None of the namespace commands are used in this example.
+
+// C<B> and [T x: A] are notations respectively for function application C(B) and typed lambda abstraction (λx∈T) A.
+// When read as propositions, these are respectively applications of the modus ponens and deduction rules.
+
+// (Typed) lambda abstraction and function application are characterized by the following properties:
+// The α-rule is that [T x: ‹…x…›] = [T y: ‹…y…›], provided that y is not a free variable in ‹…x…›.
+// The β-rule is that [T x: ‹…x…›]<B> = ‹…B…›, provided that ‹B› has type T and that none of B's free variables become bound in ‹…B…›.
+// The η-rule is that [T x: A<x>] = A, provided that x is not a free variable in A.
+
+// The Curry Paradox:
+// Let A denote the statement "implies B if preceded by its quote" implies B if preceded by its quote.
+// Then A is equivalent to (A ⊃ B).
+// The mere existence of such a statement yields a proof of B.
+// It is just the inference rule: A ⊃ (A ⊃ B), (A ⊃ B) ⊃ A ⊢ B
+ @ var prop A; var prop B;			// Let A and B denote propositions in what follows
+   def prop Imply = [A _: B];			// The AUTOMATH representation of A ⊃ B is Imply(A, B) = (Π_∈A) B
+   prim Imply(A, Imply(A, B)) Fi;		// Fi: A ⊃ (A ⊃ B)
+   prim Imply(Imply(A, B), A) Fo;		// Fo: (A ⊃ B) ⊃ A
+   def Imply(A, B) Lemma = [A x: Fi<x,x>];	// Lemma = (λx∈A) Fi(x,x): A ⊃ B
+   def B Proof = Lemma<Fo<Lemma>>;		// Proof = Lemma(Fo(Lemma)): B
+
+// aut -QZ <This file>
+// 5 beta reduction(s), 10 delta reduction(s), 0 eta reduction(s)
+// 2 + 3 = 5 definitions, 2 + 5 = 7 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

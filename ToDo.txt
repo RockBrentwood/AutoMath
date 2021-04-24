@@ -1,0 +1,96 @@
+Extensions (both planned and envisioned):
+∙	Support for UTF-8 so that mathematical notation can be more directly conveyed; e.g.:
+		∧, ∨, ⊃, ⊂, ⊢, ⊣, ∀, ∃, ⊤, ⊥, ≡, ≢, =, ≠, ≤, ≥, →, ←, ↔, etc.;
+	instead of:
+		And, Or, IfThen, Unless, Infer, Defer, All, Any, Yea, Nay, Iff, Xor, Is, Isnt, LessEq, MoreEq, To, From, ToFrom, etc.
+∙	Prefix, infix and postfix syntax for affix operators, the same way that Prolog implements them;
+	(i.e. the fx/fy/xf/yf/xfx/xfy/yfx operator types with numeric precedence).
+	to allow for notation like C∧A, A ⊢ B, ¬B, instead of ∧(C,A), ⊢(A,B), ¬(B), etc.
+∙	Support for bracketing, itself, as an operator, similar to Prolog's
+∙	Addition of product types (both tuples/lists).
+∙	Support for deBruijn's "telescoping", in conjunction with multivariate abstractions and applications.
+∙	Collating of declarations
+	Example:
+		pred A, B, C;
+	instead of
+		pred A; pred B; pred C;
+	or
+		pred A, B ↦ pred A∧B, A∨B;
+	instead of
+		pred A, pred B ↦ pred A∧B;
+		pred A, pred B ↦ pred A∨B;
+∙	Syntax remade more into as C/C++ style; with support for legacy syntax confined to conversion utilities.
+	Conversion will include AUT-ΔΠ in its scope, as well as AUT-68 and AUT-QE;
+	sufficiently comprehensive to allow the AUT-ΔΠ that Automath can currently produce to be converted.
+∙	Operator overloading.
+∙	Type inheritance/inclusion hierarchy: because deBruijn kept calling for it in his references.
+∙	Inclusion of a "typeof" primitive that works consistently with the type inheritance/inclusion;
+	because deBruijn called out the gap created by its absence (in his example code) and effectively called for its conclusion by virtue of this.
+∙	Expansion of "paragraphs" into full-fledged modules, with "public" and "private" access for the components of a module.
+∙	Separation of the "compilation" and "linking" phases.
+∙	A "conjecture"/"lemma" line = a "definition" line without a defining expression -
+	which may be used for issuing external declarations which a module implements.
+	This requires a post-processing during the linking phase to check for cyclic dependencies.
+∙	The *direct* inclusion of a *native* recursion facility by allowing for limited forms of cyclic dependencies;
+	by-passing the need for any "recursion" object -
+∙	Stratification of hypothesis into 1, 2 or more layers of context to allow for more explicit specification of polymorphism;
+	with support for a minimum of two levels of parametrization:
+	―	Hindley-Martin polymorphism parameters - which Automath's parametrization is grandfathered into,
+	―	Explicit parameters.
+	Example:
+		A, B, C: pred │ f: C∧A ⊢ B ↦ Λ f: C ⊢ A⊃B;
+	instead of
+		A, B, C: pred, f: C∧A ⊢ B ↦ Λ(A,B,C,f): C ⊢ A⊃B;
+∙	Polymorphic parameters are matched by unification rather than by exactly matching them to the names used in their definition.
+	This means that when an operator is defined by
+		T₀ x₀, T₁(x₀) x₁, T₂(x₀,x₁) x₂, ⋯ @ U₀ y₀, U₁(y₀) y₁, U₂(y₀,y₁) y₂, ⋯ ↦ T(𝐱,𝐲) Op(𝐲) = Ex(𝐱,𝐲)
+	with polymorphism parameters 𝐱 and explicit parameters 𝐲, then the 𝐱's in a call to Op(𝐅) are processed,
+	based on the surrounding context, using unification to produce the most general unifier σ: 𝐱↦𝐄,
+	and then to apply the δ-rule to equate Op(𝐅) = Ex(𝐄,𝐅) = Ex(σ𝐱,𝐅).
+∙	A posisble facility for explicitly listing polymorphic parameters, e.g. Λ«A,B,C» f for Λ(A,B,C,f) when it is desired to make A, B and C explicit.
+	A possible specification for the default ordering of polymorphic parameters.
+∙	Automatic/default determination of contexts ... from context.
+	e.g.
+		f: C∧A ⊢ B ↦ Λ f: C ⊢ A⊃B;
+	instead of
+		A, B, C: pred │ f: C∧A ⊢ B ↦ Λ f: C ⊢ A⊃B;
+	where the context (A, B, C: pred) is inferred solely from the requirement that f: C∧A ⊢ B and Λ f: C ⊢ A⊃B be well-formed.
+∙	A built-in facility for equational-logic sufficiently powerful
+	to make it possible to implement reduction systems (like Martin-Löf's).
+	A reduction system may be implemented as a "higher-level" language (or "superposed language" as deBruijn called it)
+	which compiles into a series of equational steps in AutoMath in a manner analogous to an abstraction algorithm in the Lambda calculus.
+∙	Alternatively: native support for equational logic sufficiently large to embody some of the primitives of more contemporary higher-order type systems.
+	This includes:
+	―	Possible unflattening the conflation of indexed product types and lambda abstractions
+			[T x: E]	⇒	(∏x:T) E, when E is a type
+			[T x: E]	⇒	(λx:T) E, when E is an expression
+		and support for the "implication" type T → E = (Πx:T) E, when type E is independent of x.
+	―	Possible inclusion of support for an indexed sum type (Σx:T) E;
+		and support for the "conjunction" type T ∧ E = (Σx:T) E, when type E is independent of x.
+
+As seen in the GrundLagen.aut test file, the current version of AutoMath inherits the somewhat-broken implementation of ⊃, ¬, ∀ and ∃
+seen in here in the following specificaiton which it implements:
+	A, B: prop ↦ A ⊃ B = [A → B]: prop;
+	A, B: prop │ a: A, i: A ⊃ B ↦ Mp(a,i) = i<a>: B;
+	↦ ⊥: prop;
+	A: prop ↦ ¬ A = A ⊃ ⊥, ¬² A = ¬ ¬ A: prop;
+	A: prop │ a: A ↦ ¬²↑ a = (λx: ¬ A) x<a>: ¬² A;
+	A: prop │ w: ¬² A ↦ ¬²↓ w: A;
+	A: prop │ c: ⊥ ↦ ¬↓ c = ¬²↓ (λx: ¬ A) c: A;
+
+	S: type │ P: [S → prop] ↦ ∀ P = P: prop;
+	S: type, P: [S → prop] │ a: ∀«S» P, s: S ↦ ∀↓(a,s) = a<s>: P<s>;
+	S: type, P: [S → prop] │ s: S, n: ¬ P<s> ↦ ∀∷Th1(s,n) = (λx: ∀«S» P) n<x<s>>: ¬ ∀«S» P;
+
+	S: type, P: [S → prop] │ ∄ P = (Πs:S) ¬ P<s>: [S → prop];
+	S: type, P: [S → prop] │ ∃ P = ¬ ∄ P: prop;
+	S: type, P: [S → prop] │ s: S, Ps: P<s> ↦ ∃↑(s,Ps) = ∀∷Th1(s, ¬²↑ Ps): ∃ P;
+when we should have something more like this:
+	S: type │ P: [S → prop] ↦ ∀ P: prop;
+	S: type, P: [S → prop] │ a: ∀ P ↦ ∀↓ a = (λs: S) a<s>: P;
+	S: type, P: [S → prop] │ a: ∀ P, s: S ↦ ∀↓(a,s) = (∀↓ a)<s>: P<s>;
+	S: type, P: [S → prop] │ s: S, n: ¬ P<s> ↦ ∀∷Th1(s,n) = (λx: ∀ P) n<(∀↓ x)<s>>: ¬ ∀ P;
+
+	S: type │ P: [S → prop] ↦ ∄ P = ∀ (Πs:S) ¬ P<s>: prop;
+	S: type │ P: [S → prop] ↦ ∃ P = ¬ ∄ P: prop;
+	S: type, P: [S → prop] │ s: S, Ps: P<s> ↦ ∃↑(s,Ps) = ∀∷Th1(s, ¬²↑ Ps): ∃ P;

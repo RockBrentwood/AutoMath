@@ -1,0 +1,366 @@
+// Here is an AUTOMATH implementation of log, minus the categorical algebraic identities.
+// I put the new syntax alongside this in comments.
+// The representation of the connectives as functors is made explicit:
+//	if c is the connective, c is its action on objects, while c∷× is its action on morphisms.
+// The natural bijections are all represented uniformly
+//	if c is the connective, c∷↑ and c∷↓ form the natural bijection pair.
+//	c∷π is the identity-reduced form of c∷↓ (i.e. c∷π = c∷↓ 1).
+// I'll put AutoMath up on GitHub later.
+// I may port the Grundlagen text over to log.
+// This will require adding one of the classical logic "watershed" rules, first.
+// For that I might use the rule:
+//	@ var pred A; prim arr(un(A), no(A)) unno.
+// i.e.
+// A:∙	│	⨽¬: ⨽A ⊢ ¬A.
+// The equational algebra for the categorical algebraic identities is not implemented.
+// This will require expanding AUTOMATH to include an equational formalism,
+// such as the Homological Type Theory formalism, both of which it may be possible to combine.
+
+// From your sensei, Darth Ninja.
+// aut -QZ CatLog.aut
+// 18 beta reduction(s), 94 delta reduction(s), 0 eta reduction(s)
+// 32 + 108 = 140 definitions, 61 + 140 = 201 lines
+// 1 blocks = 32 kilobytes
+// 0 seconds = 0 minutes 0 seconds
+// AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+
++log
+//	∙: type.
+//	⊤,⊥:∙.
+//	A,B:∙ ↦ A∧B,A∨B,A⊃B,A⊂B:∙.
+//	A:∙ ↦ ¬A,⨽A:∙.
+//	A,B:∙ ↦ A≡B,A≢B:∙.
+@	prim type pred;
+@	prim pred one;
+	prim pred nul;
+	var pred A;
+	var pred B;
+	var pred C;
+B@	prim pred mul;
+	prim pred add;
+	prim pred exp;
+	prim pred sub;
+A@	def pred no = exp(A,nul);
+	def pred un = sub(one,A);
+B@	def pred iff = mul(exp(A,B),exp(B,A));
+	def pred xor = add(sub(A,B),sub(B,A));
+
+//	A,B:∙ ↦ A ⊢ B: prop.
+//	A:∙ ↦ ⊢ A, A ⊢: prop.
+B@	prim prop arr;
+A@	def prop ad = arr(one,A);
+	def prop de = arr(A,nul);
+
+//	A:∙	| 1: A ⊢ A.
+//	A,B,C:∙	│ f: B ⊢ C, g: A ⊢ B ↦ f∘g: A ⊢ C.
+A@	prim arr(A,A) at;
+C@	var arr(B,C) f;
+	var arr(A,B) g;
+	prim arr(A,C) to;
+
+B@	var pred A1;
+	var pred B1;
+A@	var pred A0;
+
++one
+//	A:∙ | ⊤∷↑: A ⊢ ⊤.
+A@	prim arr(A,one) en;
+-one
+
++nul
+//	A:∙ | ⊥∷↑: ⊥ ⊢ A.
+A@	prim arr(nul,A) en;
+-nul
+
++mul
+//	A,B,C:∙		│ f: C ⊢ A, g: C ⊢ B ↦ ∧∷↑(f,g): C ⊢ A∧B.
+//	A,B,C:∙		│ h: C ⊢ A∧B ↦ ∧∷↓₀(h): C ⊢ A, ∧∷↓₁(h): C ⊢ B.
+//	A,B:∙		│ ∧∷π₀: A∧B ⊢ A, ∧∷π₁: A∧B ⊢ B.
+//	A,B,A1,B1:∙	│ k: A ⊢ A1, l: B ⊢ B1 ↦ ∧∷×(k,l): A∧B ⊢ A1∧B1.
+C@	var arr(C,A) f;
+	var arr(C,B) g;
+	prim arr(C,mul(A,B)) en;
+C@	var arr(C,mul(A,B)) h;
+	prim arr(C,A) de0;
+	prim arr(C,B) de1;
+B@	def arr(mul(A,B),A) Pi0 = de0(A,B,mul(A,B),at(mul(A,B)));
+	def arr(mul(A,B),B) Pi1 = de1(A,B,mul(A,B),at(mul(A,B)));
+B1@	var arr(A,A1) k;
+	var arr(B,B1) l;
++AndX
+B@	def pred AyB = mul(A,B);
+B1@	def pred A1yB1 = mul(A1,B1);
+k@	def arr(AyB,A1) kPi0 = to(AyB,A,A1,k,Pi0);
+l@	def arr(AyB,B1) lPi1 = to(AyB,B,B1,l,Pi1);
+	def arr(AyB,A1yB1) X = en(A1,B1,AyB,kPi0,lPi1);
+-AndX
+	def arr(mul(A,B),mul(A1,B1)) X = X{.AndX};
+-mul
+
++add
+//	A,B,C:∙		│ f: A ⊢ C, g: B ⊢ C ↦ ∨∷↑(f,g): A∨B ⊢ C.
+//	A,B,C:∙		│ h: A∨B ⊢ C ↦ ∨∷↓₀(h): A ⊢ C, ∨∷↓₁(h): B ⊢ C.
+//	A,B:∙		│ ∨∷π₀: A ⊢ A∨B, ∨∷π₁: B ⊢ A∨B.
+//	A,B,A1,B1:∙	│ k: A1 ⊢ A, l: B1 ⊢ B ↦ ∨∷×(k,l): A1∨B1 ⊢ A∨B.
+C@	var arr(A,C) f;
+	var arr(B,C) g;
+	prim arr(add(A,B),C) en;
+C@	var arr(add(A,B),C) h;
+	prim arr(A,C) de0;
+	prim arr(B,C) de1;
+B@	def arr(A,add(A,B)) Pi0 = de0(A,B,add(A,B),at(add(A,B)));
+	def arr(B,add(A,B)) Pi1 = de1(A,B,add(A,B),at(add(A,B)));
+B1@	var arr(A1,A) k;
+	var arr(B1,B) l;
++OrX
+B@	def pred AoB = add(A,B);
+B1@	def pred A1oB1 = add(A1,B1);
+k@	def arr(A1,AoB) kPi0 = to(A1,A,AoB,Pi0,k);
+l@	def arr(B1,AoB) lPi1 = to(B1,B,AoB,Pi1,l);
+	def arr(A1oB1,AoB) X = en(A1,B1,AoB,kPi0,lPi1);
+-OrX
+	def arr(add(A1,B1),add(A,B)) X = X{.OrX};
+-add
+
++exp
+//	A,B,C:∙		│ f: C∧A ⊢ B ↦ ⊃∷↑(f): C ⊢ A⊃B.
+//	A,B,C:∙		│ h: C ⊢ A⊃B ↦ ⊃∷↓(h): C∧A ⊢ B.
+//	A,B:∙		│ ⊃∷π: (A⊃B)∧A ⊢ B.
+//	A,B,A1,B1:∙	│ k: A1 ⊢ A, l: B ⊢ B1 ↦ ⊃∷×(k,l): A⊃B ⊢ A1⊃B1.
+C@	var arr(mul(C,A),B) f;
+	prim arr(C,exp(A,B)) en;
+C@	var arr(C,exp(A,B)) h;
+	prim arr(mul(C,A),B) de;
+B@	def arr(mul(exp(A,B),A),B) Pi = de(A,B,exp(A,B),at(exp(A,B)));
+B1@	var arr(A1,A) k;
+	var arr(B,B1) l;
++expX
+	def pred AadB = exp(A,B);
+	def pred A1adB1 = exp(A1,B1);
+	def pred ABA = mul(AadB,A);
+	def pred ABA1 = mul(AadB,A1);
+	def arr(ABA1,ABA) h = X{log.mul}(AadB,A1,AadB,A,at(AadB),k);
+	def arr(ABA1,B) g = to(ABA1,ABA,B,Pi(A,B),h);
+	def arr(ABA1,B1) f = to(ABA1,B,B1,l,g);
+	def arr(AadB,A1adB1) X = en(A1,B1,AadB,f);
+-expX
+	def arr(exp(A,B),exp(A1,B1)) X = X{.expX};
+-exp
+
++sub
+//	A,B,C:∙		│ g: A ⊢ B∨C ↦ ⊂∷↑(g): A⊂B ⊢ C.
+//	A,B,C:∙		│ h: A⊂B ⊢ C ↦ ⊂∷↓(h): A ⊢ B∨C.
+//	A,B:∙		│ ⊂∷π: A ⊢ B∨(A⊂B).
+//	A1,B1,A,B:∙	│ k: A1 ⊢ A, l: B ⊢ B1 ↦ ⊂∷×(k,l): A1⊂B1 ⊢ A⊂B.
+C@	var arr(A,add(B,C)) g;
+	prim arr(sub(A,B),C) en;
+C@	var arr(sub(A,B),C) h;
+	prim arr(A,add(B,C)) de;
+B@	def arr(A,add(B,sub(A,B))) Pi = de(A,B,sub(A,B),at(sub(A,B)));
+B1@	var arr(A1,A) k;
+	var arr(B,B1) l;
++UnlessX
+	def pred AdeB = sub(A,B);
+	def pred A1deB1 = sub(A1,B1);
+	def pred BAB = add(B,AdeB);
+	def pred B1AB = add(B1,AdeB);
+	def arr(BAB,B1AB) h = X{log.add}(B1,AdeB,B,AdeB,l,at(AdeB));
+	def arr(A,B1AB) g = to(A,BAB,B1AB,h,Pi(A,B));
+	def arr(A1,B1AB) f = to(A1,A,B1AB,g,k);
+	def arr(A1deB1,AdeB) X = en(A1,B1,AdeB,f);
+-UnlessX
+	def arr(sub(A1,B1),sub(A,B)) X = X{.UnlessX};
+-sub
+
++iff
+//	A,B,C:∙		│ f: C∧A ⊢ B, g: C∧B ⊢ A ↦ ≡∷↑(f,g): C ⊢ A≡B.
+//	A,B,C:∙		│ h: C ⊢ A≡B ↦ ≡∷↓₀(h): C∧A ⊢ B, ≡∷↓₁(h): C∧B ⊢ A.
+//	A,B:∙		│ ≡∷π₀: (A≡B)∧A ⊢ B, ≡∷π₁: (A≡B)∧B ⊢ A.
+//	A,B,A₁,B₁:∙	│ k₀: A ⊢ A₁, k₁: A₁ ⊢ A; l₀: B ⊢ B₁, l₁: B₁ ⊢ B ↦ ≡∷×(k₀,k₁,l₀,l₁): A≡B ⊢ A₁≡B₁.
+C@	var arr(mul(C,A),B) f;
+	var arr(mul(C,B),A) g;
++IffIn
+B@	def pred AadB = exp(A,B);
+	def pred BadA = exp(B,A);
+	def pred AisB = iff(A,B);
+f@	def arr(C,AadB) fI = en{log.exp}(A,B,C,f);
+g@	def arr(C,BadA) gI = en{log.exp}(B,A,C,g);
+	def arr(C,AisB) en = en{log.mul}(AadB,BadA,C,fI,gI);
+-IffIn
+	def arr(C,iff(A,B)) en = en{.IffIn};
+C@	var arr(C,iff(A,B)) h;
++IffEx
+B@	def pred AadB = exp(A,B);
+	def pred BadA = exp(B,A);
+h@	def arr(C,AadB) hE0 = de0{log.mul}(AadB,BadA,C,h);
+	def arr(C,BadA) hE1 = de1{log.mul}(AadB,BadA,C,h);
+	def arr(mul(C,A),B) de0 = de{log.exp}(A,B,C,hE0);
+	def arr(mul(C,B),A) de1 = de{log.exp}(B,A,C,hE1);
+-IffEx
+h@	def arr(mul(C,A),B) de0 = de0{.IffEx};
+	def arr(mul(C,B),A) de1 = de1{.IffEx};
+B@	def arr(mul(iff(A,B),A),B) Pi0 = de0(A,B,iff(A,B),at(iff(A,B)));
+	def arr(mul(iff(A,B),B),A) Pi1 = de1(A,B,iff(A,B),at(iff(A,B)));
+B1@	var arr(A,A1) k0;
+	var arr(A1,A) k1;
+	var arr(B,B1) l0;
+	var arr(B1,B) l1;
++IffX
+B@	def pred AadB = exp(A,B);
+	def pred BadA = exp(B,A);
+	def pred AisB = iff(A,B);
+B1@	def pred A1adB1 = exp(A1,B1);
+	def pred B1adA1 = exp(B1,A1);
+	def pred A1isB1 = iff(A1,B1);
+l1@	def arr(AadB,A1adB1) k1adl0 = X{log.exp}(A,B,A1,B1,k1,l0);
+	def arr(BadA,B1adA1) l1adk0 = X{log.exp}(B,A,B1,A1,l1,k0);
+	def arr(AisB,A1isB1) X = X{log.mul}(AadB,BadA,A1adB1,B1adA1,k1adl0,l1adk0);
+-IffX
+	def arr(iff(A,B),iff(A1,B1)) X = X{.IffX};
+-iff
+
++xor
+//	A,B,C:∙		│ f: A ⊢ B∨C, g: B ⊢ A∨C ↦ ≢∷↑(f,g): A≢B ⊢ C.
+//	A,B,C:∙		│ h: A≢B ⊢ C ↦ ≢∷↓₀(h): A ⊢ B∨C, ≢∷↓₁(h): B ⊢ A∨C.
+//	A,B:∙		│ ≢∷π₀: A ⊢ B∨(A≢B), ≢∷π₁: B ⊢ A∨(A≢B).
+//	A₁,B₁,A,B:∙	│ k₀: A ⊢ A₁, k1: A₁ ⊢ A, l₀: B ⊢ B₁, l₁: B₁ ⊢ B ↦ ≢∷×(k₀,k₁,l₀,l₁): A₁≢B₁ ⊢ A≢B.
+C@	var arr(A,add(B,C)) f;
+	var arr(B,add(A,C)) g;
++XorIn
+B@	def pred AdeB = sub(A,B);
+	def pred BdeA = sub(B,A);
+	def pred AnoB = xor(A,B);
+f@	def arr(AdeB,C) fI = en{log.sub}(A,B,C,f);
+g@	def arr(BdeA,C) gI = en{log.sub}(B,A,C,g);
+	def arr(AnoB,C) en = en{log.add}(AdeB,BdeA,C,fI,gI);
+-XorIn
+	def arr(xor(A,B),C) en = en{.XorIn};
+C@	var arr(xor(A,B),C) h;
++XorEx
+B@	def pred AdeB = sub(A,B);
+	def pred BdeA = sub(B,A);
+h@	def arr(AdeB,C) hE0 = de0{log.add}(AdeB,BdeA,C,h);
+	def arr(BdeA,C) hE1 = de1{log.add}(AdeB,BdeA,C,h);
+	def arr(A,add(B,C)) de0 = de{log.sub}(A,B,C,hE0);
+	def arr(B,add(A,C)) de1 = de{log.sub}(B,A,C,hE1);
+-XorEx
+	def arr(A,add(B,C)) de0 = de0{.XorEx};
+	def arr(B,add(A,C)) de1 = de1{.XorEx};
+B@	def arr(A,add(B,xor(A,B))) Pi0 = de0(A,B,xor(A,B),at(xor(A,B)));
+B@	def arr(B,add(A,xor(A,B))) Pi1 = de1(A,B,xor(A,B),at(xor(A,B)));
+B1@	var arr(A,A1) k0;
+	var arr(A1,A) k1;
+	var arr(B,B1) l0;
+	var arr(B1,B) l1;
++XorX
+B@	def pred AdeB = sub(A,B);
+	def pred BdeA = sub(B,A);
+	def pred AnoB = xor(A,B);
+B1@	def pred A1deB1 = sub(A1,B1);
+	def pred B1deA1 = sub(B1,A1);
+	def pred A1noB1 = xor(A1,B1);
+l1@	def arr(A1deB1,AdeB) k1del0 = X{log.sub}(A,B,A1,B1,k1,l0);
+	def arr(B1deA1,BdeA) l1dek0 = X{log.sub}(B,A,B1,A1,l1,k0);
+	def arr(A1noB1,AnoB) X = X{log.add}(AdeB,BdeA,A1deB1,B1deA1,k1del0,l1dek0);
+-XorX
+	def arr(xor(A1,B1),xor(A,B)) X = X{.XorX};
+-xor
+
++no
+//	A,B:∙	│ f: B∧A ⊢ ⊥ ↦ ¬∷↑(f): B ⊢ ¬A.
+//	A,B:∙	│ h: B ⊢ ¬A ↦ ¬∷↓(h): B∧A ⊢ B.
+//	A:∙	│ ¬∷π: ¬A∧A ⊢ ⊥.
+//	A,A0:∙	│ k: A0 ⊢ A ↦ ¬∷×(k): ¬A ⊢ ¬A0.
+B@	var arr(mul(B,A),nul) f;
+	def arr(B,no(A)) en = en{log.exp}(A,nul,B,f);
+B@	var arr(B,no(A)) h;
+	def arr(mul(B,A),nul) de = de{log.exp}(A,nul,B,h);
+A@	def arr(mul(no(A),A),nul) Pi = de{log.exp}(A,nul,no(A),at(no(A)));
+A0@	var arr(A0,A) k;
+	def arr(no(A),no(A0)) X = X{log.exp}(A,nul,A0,nul,k,at(nul));
+-no
+
++un
+//	A,B:∙	│ g: ⊤ ⊢ A∨B ↦ ⨽∷↑(g): ⨽A ⊢ B.
+//	A,B:∙	│ h: ⨽A ⊢ B ↦ ⨽∷↓(h): ⊤ ⊢ A∨B.
+//	A:∙	│ ⨽∷π: ⊤ ⊢ A∨⨽A.
+//	A,A0:∙	│ k: A ⊢ A0 ↦ ⨽∷×(k): ⨽A0 ⊢ ⨽A.
+B@	var arr(one,add(A,B)) g;
+	def arr(un(A),B) en = en{log.sub}(one,A,B,g);
+B@	var arr(un(A),B) h;
+	def arr(one,add(A,B)) de = de{log.sub}(one,A,B,h);
+A@	def arr(one,add(A,un(A))) Pi = de{log.sub}(one,A,un(A),at(un(A)));
+A0@	var arr(A,A0) k;
+	def arr(un(A0),un(A)) X = X{log.sub}(one,A,one,A0,at(one),k);
+-un
+
+//	▪:type.
+//	D:▪→∙ ↦ ∀ D,∃ D:∙.
+@	var type term;
+term@	var [term t: pred] D;
+	var pred E;
+D@	prim pred all;
+	prim pred any;
+
++all
+//	D:▪→∙, E:∙	│ f: [t:▪ ↦ E ⊢ D<t>] ↦ ∀∷↑(f): E ⊢ ∀ D.
+//	D:▪→∙, E:∙	│ h: E ⊢ ∀ D ↦ ∀∷↓(h): [t:▪ ↦ E ⊢ D<t>].
+//	D:▪→∙		│ ∀∷π: [t:▪ ↦ ∀ D ⊢ D<t>].
+//	D,D1:▪→∙	│ k: [t:▪ ↦ D<t> ⊢ D1<t>] ↦ ∀∷×(k): ∀ D ⊢ ∀ D1.
+E@	var [term t: arr(E,D<t>)] f;
+	prim arr(E,all(D)) en;
+E@	var arr(E,all(D)) h;
+	prim [term t: arr(E,D<t>)] de;
+D@	def [term t: arr(all(D),D<t>)] Pi = de(D,all(D),at(all(D)));
+D@	var [term t: pred] D1;
+D1@	var [term t: arr(D<t>,D1<t>)] k;
+	def arr(all(D),all(D1)) X = en(D1,all(D),[term t: to(all(D),D<t>,D1<t>,k<t>,Pi(D)<t>)]);
+-all
+
++any
+//	D:▪→∙, E:∙	│ f: [t:▪ ↦ D<t> ⊢ E] ↦ ∃∷↑(f): ∃ D ⊢ E.
+//	D:▪→∙, E:∙	│ h: ∃ D ⊢ E ↦ ∃∷↓(h): [t:▪ ↦ D<t> ⊢ E].
+//	D:▪→∙		│ ∃∷π: [t:▪ ↦ D<t> ⊢ ∃ D].
+//	D,D1:▪→∙	│ k: [t:▪ ↦ D<t> ⊢ D1<t>] ↦ ∃∷×(k): ∃ D ⊢ ∃ D1.
+E@	var [term t: arr(D<t>,E)] f;
+	prim arr(any(D),E) en;
+E@	var arr(any(D),E) h;
+	prim [term t: arr(D<t>,E)] de;
+D@	def [term t: arr(D<t>,any(D))] Pi = de(D,any(D),at(any(D)));
+D@	var [term t: pred] D1;
+D1@	var [term t: arr(D1<t>,D<t>)] k;
+	def arr(any(D1),any(D)) X = en(D1,any(D),[term t: to(D1<t>,D<t>,any(D),Pi(D)<t>,k<t>)]);
+-any
+
++ad
+//	A:∙	│ p: ⊤ ⊢ A ↦ *p: ⊢ A.
+//	A:∙	│ a: ⊢ A ↦ &a: ⊤ ⊢ A.
+A@	var arr(one,A) p;
+	prim ad(A) en;
+A@	var ad(A) a;
+	prim arr(one,A) de;
+//	A:∙	│ f: A ⊢ B, a: ⊢ A ↦ f(a) ≡ *(f∘&a): ⊢ B.
+//	A:∙	│ a: ⊢ A, b: ⊢ B ↦ (a,b) ≡ *∧∷↑(&a,&b): ⊢ A∧B.
+//	D:▪→∙	│ [t:term ↦ d<t>: ⊢ D<t>] ↦ (x¦d<x>) ≡ *∀∷↑([t:term ↦ &d<t>]): ⊢ ∀ D.
+//		│ () ≡ *⊤∷↑: ⊢ ⊤.
+//	A,B:∙	| φ: ⊢ A⊃B ↦ &&φ ≡ (⊃∷↓(&φ))∘(∧∷↑(⊤∷↑,1)): A ⊢ B.
+//	A,B:∙	| φ: ⊢ A⊃B, a: ⊢ A ↦ φ<a> ≡ *(&&φ∘&a): ⊢ B.
+//	━━━ Not yet implemented ━━━
+-ad
+
++de
+//	A:∙	│ p: A ⊢ ⊥ ↦ de∷↑(p): ⊢ A.
+//	A:∙	│ a: A ⊢ ↦ de∷↓(a): A ⊢ ⊥.
+A@	var arr(A,nul) p;
+	prim de(A) en;
+A@	var de(A) a;
+	prim arr(A,nul) de;
+//	A:∙	│ a: B ⊢, f: A ⊢ B ↦ {a}f ≡ (a*∘f)&: ⊢ B.
+//	A:∙	│ a: A ⊢, b: B ⊢ ↦ {a,b} ≡ ∨∷↑(a*,b*)&: A∨B ⊢.
+//	D:▪→∙	│ [t:term ↦ d<t>: D<t> ⊢] ↦ {d<y>¦y} ≡ ∃∷↑([t:term ↦ d<t>*])&: ∃ D ⊢.
+//		│ {} ≡ ⊥∷↑&: ⊥ ⊢.
+//	A,B:∙	│ φ: A⊂B ⊢ ↦ φ** ≡ (∨∷↑(1,⊥∷↑))∘(⊂∷↓(φ*)): A ⊢ B.
+//	A,B:∙	│ φ: A⊂B ⊢, a: A ⊢ ↦ [a]φ ≡ (a*∘φ**)&: B ⊢.
+//	━━━ Not yet implemented ━━━
+-de
+-log

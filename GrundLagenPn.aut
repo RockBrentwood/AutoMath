@@ -1,0 +1,85 @@
++l
+   var prop A; var prop B;
+   def prop Imp = [A x: B];
+ @ prim prop No;
+A@ def prop Not = Imp(No);
+   def prop Ok = Not(Not(A));
+   var Ok(A) w;
+   prim A OkE;
+B@ def prop Nan = Imp(A, Not(B));
+   def prop And = Not(Nan(A, B));
+ @ var type S; var [S x: prop] P;
+   def prop All = P;
+   def [S x: prop] None = [S x: Not(P<x>)];
+   def prop Some = Not(None(P));
++e
+S@ var S s; var S t;
+   prim prop Is;
+s@ prim Is(s, s) IsR;
+P@ var S s; var S t; var P<s> Ps; var Is(s, t) i;
+   prim P<t> IsP;
+P@ def prop AmOne = [S x, S y, P<x> u, P<y> v: Is(x, y)];
+   def prop One = And(AmOne(S, P), Some(S, P));
+   var One(S, P) o;
+   prim S Ind;
+   prim P<Ind> OneAx;
+S@ var type T; var [S x: T] f;
+   def prop Inj = All([S x: All([S y: Imp(Is(T, f<x>, f<y>), Is(x, y))])]);
+   var T t0;
+   def prop Im = Some([S x: Is(T, t0, f<x>)]);
+T@ var [S x: T] f; var [S x: T] g; var [S x: Is(T, f<x>, g<x>)] i;
+   prim Is([S x: T], f, g) FisI;
+P@ prim type Out;
+   var Out o;
+   prim S In;
+   prim P<In> InP;
+P@ prim Inj(Out, S, [Out x: In(x)]) OutAx0;
+   var S s; var P<s> Ps;
+   prim Im(Out, S, [Out x: In(x)], s) OutAx1;
+T@ prim type Prod;
+   var S s; var T t;
+   prim Prod Pair;
+T@ var Prod ST;
+   prim S Fst;
+   prim T Snd;
+   prim Is(Prod, Pair(Fst, Snd), ST) PairIs;
+t@ prim Is(S, Fst(Pair), s) FstIs;
+   prim Is(T, Snd(Pair), t) SndIs;
++st
+S@ prim type Set;
+   var S s; var Set s0;
+   prim prop IsIn;
+P@ prim Set SetOf;
+   var S s; var P<s> Ps;
+   prim IsIn(s, SetOf(P)) IsInI;
+s@ var IsIn(s, SetOf(P)) e;
+   prim P<s> IsInE;
+S@ var Set s0; var Set t0;
+   def prop SubSet = All([S x: Imp(IsIn(x, s0), IsIn(x, t0))]);
+   var SubSet(s0, t0) i; var SubSet(t0, s0) j;
+   prim Is(Set, s0, t0) IsSetI;
++eq
++landau
++n
+ @ prim type Nat;
+   var Nat x; var Nat y;
+   def prop Is = Is(Nat, x, y);
+   def prop Isnt = Not(Is(x, y));
+x@ var Set(Nat) s;
+   def prop In = IsIn(Nat, x, s);
+ @ var [Nat x: prop] P;
+   def prop All = All(Nat, P);
+ @ prim Nat 1;
+   prim [Nat x: Nat] Succ;
+   prim [Nat x: Isnt(Succ<x>, 1)] Ax3;
+   prim [Nat x, Nat y, Is(Succ<x>, Succ<y>) u: Is(x, y)] Ax4;
+   var Set(Nat) s;
+   def prop Cond0 = In(1, s);
+   def prop CondS = All([Nat x: Imp(In(x, s), In(Succ<x>, s))]);
+ @ prim [Set(Nat) s, Cond0(s) u, CondS(s) v, Nat x: In(x, s)] Ax5;
+-n
+-landau
+-eq
+-st
+-e
+-l
