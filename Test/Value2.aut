@@ -1,0 +1,5 @@
+#! /local/bin/aut -o
++p
+var type x;
+def type t = x{p};
+-p

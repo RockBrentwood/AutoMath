@@ -1,0 +1,4 @@
+#! /local/bin/aut
+var type x;
+prim type f;
+@ def type s = f;

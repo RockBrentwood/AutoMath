@@ -1,0 +1,8 @@
+#! /local/bin/aut
+## It is not very clear whether this book is correct according to the definition of Automath.
+## The "colored algorithm" of the Bruyn would accept it.
+## It will not be considered correct by the checker.
+  @ prim type S;
+  @ var S s;
+s @ prim type T;
+  @ def [S s: [T(s) t: T(s)]] foo = [S s0: [S s1: [T(s0) t0: [T(s1) t1: t1]<t0>]]<s0>];

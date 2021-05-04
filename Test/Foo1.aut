@@ -1,0 +1,5 @@
+#! /local/bin/aut
+var type x; var type y; var type z;
+prim type t;
+x @ var type y; var type z;
+def type u = t(z);

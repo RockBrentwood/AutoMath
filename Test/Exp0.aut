@@ -1,0 +1,5 @@
+#! /local/bin/aut
+prim type t;
+var type x;
+def type f = x;
+def type g = f(t, t);

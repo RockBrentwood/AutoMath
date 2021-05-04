@@ -1,0 +1,3 @@
+#! /local/bin/aut
+var type x;
+def type f = x();

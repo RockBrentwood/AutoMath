@@ -1,0 +1,167 @@
+file "Check0.aut"; line 2 # type error: "type" does not have a type, != type
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 1 = 1 definitions, 0 + 1 = 1 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Check1.aut"; line 5 # type error: a: t != u
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+3 + 1 = 4 definitions, 0 + 4 = 4 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Check2.aut"; line 4 # expression is not a function: a
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 1 = 3 definitions, 0 + 3 = 3 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Check3.aut"; line 4 # expression should have degree 1 or 2: a
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+3 + 0 = 3 definitions, 0 + 3 = 3 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Check4.aut"; line 4 # expression should have degree 2: a
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 1 = 3 definitions, 0 + 3 = 3 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 0 = 2 definitions, 0 + 2 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Exp0.aut"; line 5 # function has too many arguments: "f"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 1 = 3 definitions, 1 + 3 = 4 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Exp1.aut"; line 4 # implicit variable not in context: "x", of function "f"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 0 = 2 definitions, 1 + 2 = 3 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Exp2.aut"; line 3 # a constant can't have arguments: "x"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 1 = 1 definitions, 1 + 1 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Exp3.aut"; line 3 # a variable can't have arguments: "x"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 1 = 2 definitions, 0 + 2 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Foo0.aut"; line 8 # type error: t0: T(s0) != T(s1)
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 1 = 3 definitions, 1 + 3 = 4 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Foo1.aut"; line 5 # implicit variable not in context: "y", of function "t"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+2 + 0 = 2 definitions, 5 + 2 = 7 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Item0.aut"; line 3 # can't set context to a defined constant: "t"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 0 = 1 definitions, 0 + 1 = 1 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Item1.aut"; line 3 # duplicate variable identifier in context: "x"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 2 + 0 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Item2.aut"; line 3 # variable covers definition with same name on same level: "t"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 0 = 1 definitions, 1 + 1 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Item3.aut"; line 3 # definition covers item with same name on same level: "t"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 0 = 1 definitions, 1 + 1 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Main0.aut"; line 2 # unknown identifier: "y"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 1 + 0 = 1 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Main1.aut"; line 3 # book ends inside comment, nested braces: 1
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+file "Par0.aut"; line 3 # book doesn't end at cover: "p"
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Par1.aut"; line 4 # incorrect paragraph reference: "q" in paragraph "p"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 1 = 2 definitions, 0 + 2 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Par2.aut"; line 4 # incorrect paragraph reference: "-q" in paragraph "p"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 1 = 2 definitions, 0 + 2 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Par3.aut"; line 3 # duplicate nested identifiers: "p" in paragraph "p"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Par4.aut"; line 3 # closing paragraph that's not open: "q" in paragraph "p"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Par5.aut"; line 2 # closing paragraph with no paragraphs open
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Value0.aut"; line 3 # variable not in context: "x"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+1 + 0 = 1 definitions, 1 + 1 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Value1.aut"; line 2 # unknown identifier: "x"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Value2.aut"; line 4 # variable should not have explicit paragraph: "x"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 1 = 1 definitions, 1 + 1 = 2 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
+file "Value3.aut"; line 3 # unknown identifier in paragraph: "x" in paragraph "p"
+0 beta reduction(s), 0 delta reduction(s), 0 eta reduction(s)
+0 + 0 = 0 definitions, 0 + 0 = 0 lines
+1 blocks = 32 kilobytes
+0 seconds = 0 minutes 0 seconds
+AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja

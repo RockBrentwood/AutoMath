@@ -1,0 +1,3 @@
+#! /local/bin/aut
+prim type t;
+prim [t x: type] s;

@@ -1,0 +1,4 @@
+#! /local/bin/aut
+prim type t;
+prim t a;
+def t b = a<a>;

@@ -1,0 +1,5 @@
+#! /local/bin/aut
++p
+prim type t;
+def type u = t{q};
+-p
