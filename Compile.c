@@ -1,3 +1,5 @@
+// Not uet used.
+// Slated for later inclusion and upgrade, as part of a separate facility to convert to/from legacy syntax.
 #include <stdio.h>
 #include <stdlib.h>
 #include "AutoMath.h"

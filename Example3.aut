@@ -1,4 +1,4 @@
-// Notes about the local 2016 revision of AUTOMATH:
+// Notes about the 2016 revision of AUTOMATH:
 // Types and propositions are treated the same, so the keywords "type" and "prop" are interchangeable.
 
 // var T x; declares a variable x of type T.
@@ -21,6 +21,8 @@
 // The α-rule is that [T x: ‹…x…›] = [T y: ‹…y…›], provided that y is not a free variable in ‹…x…›.
 // The β-rule is that [T x: ‹…x…›]<B> = ‹…B…›, provided that ‹B› has type T and that none of B's free variables become bound in ‹…B…›.
 // The η-rule is that [T x: A<x>] = A, provided that x is not a free variable in A.
+
+// The following is mostly superseded by Quant.aut.
 
 // An attempt to embody an extended version of the Lambek-Scott category-theoretic treatment of the Curry-Howard correspondence
 // within the framework of AutoMath. The extension includes assertions and queries,

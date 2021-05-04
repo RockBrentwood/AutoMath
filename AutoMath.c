@@ -12,7 +12,10 @@
 #include <setjmp.h>
 #include "AutoMath.h"
 #ifdef macintosh
-#   include <CursorCtl.h>
+#   include <CursorCtl.h> // For SpinCursor() and InitCursorCtl()
+#else
+#   define SpinCursor(Increment) ((void)(Increment))
+#   define InitCursorCtl(NewCursors) ((void)(NewCursors))
 #endif
 
 bool DoA, DoC, DoO, DoQ, DoD, DoL, DoM, DoR, DoV;
@@ -22,9 +25,7 @@ int ArgK, ArgN, ArgT, ArgX;
 static char *AppName, *File = "-", **Files;
 
 void Yield(void) {
-#ifdef macintosh
-   SpinCursor(1);
-#endif
+   SpinCursor(1); // The wait icon.
 }
 
 int Line;
@@ -83,14 +84,12 @@ bool yywrap(void) {
 }
 
 static void Usage(void) {
-   fprintf(stderr, "Usage: %s [-QZ] [-abcdefilmopqrsvyz] [-kntx parameters] [--] [files]\n", AppName), exit(2);
+   fprintf(stderr, "Usage: %s [-QZ] [-abcdefilmoqrvyz] [-kntx parameters] [--] [files]\n", AppName), exit(2);
 }
 
 int main(int AC, char **AV) {
    signal(SIGINT, &AbortFn);
-#ifdef macintosh
    InitCursorCtl(0);
-#endif
    AppName = AV[0]; if (AppName == NULL || *AppName == '\0') AppName = "AutoMath";
    ArgK = 1;
    int A = 1; char *Arg;

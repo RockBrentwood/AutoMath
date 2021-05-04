@@ -11,7 +11,7 @@ static void MarkSt(St S) {
 static void ScanEx(Ex E) {
    if (E != NULL) switch (E->Kind) {
       case TermK: {
-         Term T = (Term)E; MarkSt((St)T->Fun); // (##) Added the (St) typecast to the original.
+         Term T = (Term)E; MarkSt((St)T->Fun); // (@) Added the (St) typecast to the original.
          for (List A = T->Args; A != NULL; A = A->Prev) ScanEx(A->Arg);
       }
       break;

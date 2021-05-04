@@ -1,19 +1,19 @@
 Notes on the revised syntax.
-To facilitate later developments, a few changes were made in 2016 in the local version of the original ‟aut” program.
+To facilitate later developments, a few changes were made in the 2016 version of the original ‟aut” program.
 
-The syntax now used (which is given in Lexical.l / Lexical.c and Syntax.y / Syntax.c) now has the following categories:
+The syntax now used (which is given in Lexical.{l,c} and Syntax.{y,c}) now has the following categories:
 S: Statements
 T: Types
 E: Expressions
 X: The (possibly scoped) name of a variable, constant or operator.
 x: The unscoped name of a variable, constant or operator.
 
-Program → S*			―	0, 1, 2 or more statements
+Program → S … S			―	0, 1, 2 or more statements.
 
-S → «+» x			―	Open a new paragraph named x
-S → «-» x			―	Close the current paragraph (which should be named x)
-S → «.»				―	Close the current paragraph
-S → «@»				―	Set a new scope or ‟context”
+S → «+» x			―	Open a new paragraph named x.
+S → «-» x			―	Close the current paragraph (which should be named x).
+S → «.»				―	Close the current paragraph.
+S → «@»				―	Set a new scope or ‟context”.
 S → X «@»			―	Continue the scope past the point where the most recent definition for variable X occurred.
 					This removes all the intervening definitions of variables from the current scope.
 S → «var» T x «;»		―	Declare x as a variable of type T.
@@ -24,7 +24,7 @@ S → «def» T x «=» [«~»] E «;»	―	Define x as an operator returning th
 					This treats the definition as a conjecture, with E as a suggested proof.
 					Apart from the listing of the expression E, it is equivalent to just issuing a ‟conjecture” declaration «def» T x «;».
 
-T → «prop»			―	The ‟proposition” kind
+T → «prop»			―	The ‟proposition” kind.
 T → «type»			―	The ‟type” kind. Both «prop» and «type» are treated the same in this implementation.
 T → E				―	A generic type expression.
 
@@ -39,7 +39,7 @@ E → «[» L E «]»			―	A function abstraction.
 
 L → [T x «,» … «,» T x] «:»	―	The function abstraction lambda.
 
-X → x				―	A simple name, taken from the current paragraph or from a paragraph presiding above it
+X → x				―	A simple name, taken from the current paragraph or from a paragraph residing above it.
 X → x «{» x «.» x … «.» x «}»	―	A name taken from an absolute paragraph (/x/x/…/x).
 X → x «{» «.» x … «.» x «}»	―	A name taken from a relative paragraph (Current/x/…/x).
 
@@ -113,7 +113,7 @@ Contexts are defined, updated and used in the following ways:
 ∙	def T x = E; defines the following operator x: $C ↦ T E and verifies $C ⊢ E:T.
 ∙	For the "var", "def" and "prim" statements $C must not contain any declaration of x.
 
-Definitions and declarations are subject to the following conditions:
+Definitions and declarations are subject to the following conditions (the features pertaining to conjectures are not yet implemented):
 ∙	For "prim T x;" declarations, "x" cannot match any previously-declared/defined operator.
 ∙	For "def T x[ = E];" declarations, "x" cannot match any previously-declared/defined operator,
 	except a declaration "def T' x", where T = T' is definitionally true.

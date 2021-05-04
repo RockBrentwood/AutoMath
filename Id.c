@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "AutoMath.h"
 
-static char *IdTab[2016]; const size_t HashMod = sizeof IdTab/sizeof IdTab[0];
+static char *IdTab[2021]; const size_t HashMod = sizeof IdTab/sizeof IdTab[0];
 static char *OtherX = NULL; static size_t OtherN = 0;
 
 char *FindId(char *S) {

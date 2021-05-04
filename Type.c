@@ -48,7 +48,7 @@ static Lam WireAbst(Lam E, Ex Type, Ex Body) {
    return L;
 }
 
-static Ex FillEx(Ex E); // Recursive call.
+static Ex FillEx(Ex E); // (@) Recursive call.
 
 static List FillExs(List A) {
    if (A != NULL) {

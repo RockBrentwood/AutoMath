@@ -39,8 +39,8 @@ typedef struct Var *Var;	// Kind ≡ VarK.
 // ∙	TopList is the list header for the top level.
 // ∙	C->Par∷Sub is the list header for context C.
 // ∙	Par∷Prev is the list link.
-typedef struct Par *Par; // 0 means "cover".
-struct Par { char *Id; Par Sup, Sub, Prev; St Beg, End; }; // 0 means "cover".
+typedef struct Par *Par; // NULL means "cover".
+struct Par { char *Id; Par Sup, Sub, Prev; St Beg, End; };
 typedef struct List *List;
 struct List { Ex Arg; List Prev; };
 
@@ -112,7 +112,7 @@ typedef struct Value *Value;
 struct Value { char *Id, *ExVal; Value Prev; };
 
 #ifdef NOCHECK
-#   define assert(X)
+#   define assert(X) ((void)(X))
 #else
 #   include <assert.h>
 #endif

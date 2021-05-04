@@ -1,3 +1,4 @@
+// To Lydia:
 // Here is an AUTOMATH implementation of log, minus the categorical algebraic identities.
 // I put the new syntax alongside this in comments.
 // The representation of the connectives as functors is made explicit:

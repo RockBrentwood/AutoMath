@@ -1,7 +1,14 @@
-CC=CParser
-#CC=gcc
+## The compile command and flags (the local compiler CParser will also be released for distribution later).
+CC=gcc
+CFLAGS=-O -g -std=gnu99
+#CC=CParser
+#CFLAGS=-O -g
+## The shell command.
 SH=/bin/sh
-CFLAGS=-O -g
+## The link command (use "cp" if the host does not support symbolic linking).
+#LN=cp
+LN=ln -s -f
+## The file extensions
 O=.o
 X=
 OBJS=Syntax$O Lexical$O Allocate$O Id$O AutoMath$O Par$O St$O Value$O Ex$O Print$O Type$O Eval$O Check$O Excerpt$O
@@ -28,25 +35,28 @@ Check$O: AutoMath.h
 Excerpt$O: AutoMath.h
 
 ## The lexer has been replaced by a manually programmed one.
-##LEX=flex -Cf
+#LEX=flex -Cf
 ##Lexical.c: Lexical.l
 ##	${LEX} Lexical.l
 ##	mv lex.yy.c Lexical.c
-## The parser has been replaced by a manually recoded one.
-##YACC=yacc
+Lexical.c: Lexical0.c
+	${LN} Lexical0.c Lexical.c
+## The parser has been replaced by a manually programmed one.
+#YACC=yacc
 ##Syntax.c: Syntax.y
 ##	${YACC} Syntax.y
 ##	mv y.tab.c Syntax.c
 Syntax.c: Syntax0.c
-	cp Syntax0.c Syntax.c
+	${LN} Syntax0.c Syntax.c
 
 test: $(PROGRAM) GrundLagen.aut GrundLagenPn.aut
 	$(SH) Test.sh
 install: $(PROGRAM)
 	install -c -s $(PROGRAM) ${BINDIR}
 small:
-	rm -f y.tab.c y.tab.h y.output *$O core
+#	rm -f y.tab.c y.tab.h y.output
+	rm -f *$O core
 clean: small
 	rm -f $(PROGRAM)
-#	rm -f Lexical.c ## This was from when Lexical.c was generated from Lexical.l.
-#	rm -f Syntax.c Syntax.h ## This was from when Syntax.c and Syntax.h were generated from Syntax.y.
+	rm -f Lexical.c
+	rm -f Syntax.c

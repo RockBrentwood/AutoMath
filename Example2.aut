@@ -1,4 +1,4 @@
-// Notes about the local 2016 version of AUTOMATH:
+// Notes about the 2016 version of AUTOMATH:
 // var T x; declares a variable x of type T.
 // prim T c; declares a function or constant c of type T.
 // def T c = E; defines a function or constant c of type T to be given by expression E.

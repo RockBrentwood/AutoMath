@@ -1,4 +1,4 @@
-Command-Line Options: (#) = Changes made in the local 2016 version.
+Command-Line Options: (#) = Changes made in the 2016 version.
 -Q	-acoq
 -a	Allow degree one Abstractions
 -c	put Context parameters in front of other definitions
@@ -27,4 +27,4 @@ Command-Line Options: (#) = Changes made in the local 2016 version.
 Former Command-Line Options:
 -p	allow Props (#) Prop = Type.
 -s	no paragraph reopeners without a Star (#) Open and Reopen are merged.
--g	compile to AUT-ΛΠ
+-g	compile to AUT-ΛΠ (a separate conversion utility will be provided to convert from and may to legacy syntax)

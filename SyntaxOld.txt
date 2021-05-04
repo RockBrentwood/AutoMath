@@ -16,13 +16,13 @@ The modifications consist of:
 		variables x: x₀, x₁, x₂, ⋯, and
 		dummy variables t: t₀, t₁, t₂, ⋯
 	have to be taken from three disjoint lexical classes.
-	(#) the author said ‟infinite lists” in places of ‟lexical classes”.
+	(@) The original said ‟infinite lists” in places of ‟lexical classes”.
 
 The basic symbols are, besides the names mentioned under (4):
 	+ * := PN EB type , ( ) { } [ ].
 
 The following syntax is the one of AUTOMATH; we get the syntax of PAL if we omit the line marked [AUTOMATH].
-(#) The original said ‟everything below the dotted horizontal line” in place of ‟the line marked [AUTOMATH]”.
+(@) The original said ‟everything below the dotted horizontal line” in place of ‟the line marked [AUTOMATH]”.
 
 	Book → Line*
 	Line → Ind «*» Def «*» Cat

@@ -5,3 +5,14 @@ The syntax has been modified and generalized; with further changes planned (e.g.
 
 The main test file is GrundLagen.aut, which contains (in the modified syntax) the AUTOMATH formalization of a monograph on real analysis;
 which is described in further detail in the thesis under AUT069 at the AUTOMATH archive https://www.win.tue.nl/automath/.
+Example4.aut and Example5.aut are the two examples from deBruijn's specification (AUT001 at the AUTOMATH archive), rewritten in the 2016 syntax, with a minor error in the original corrected.
+
+To test revisions, for now, run
+	make test >& Test.err
+or
+	./Test.sh >& Test.err
+and compare Test.err with Test.out using
+	diff Test.err Test.out.
+
+Further tests are contained in the Test directory.
+Both of these procedures will later be included in the Makefile under "make test".

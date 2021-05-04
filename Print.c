@@ -16,7 +16,7 @@ int PutSym(FILE *ExF, Ex E) {
    return N;
 }
 
-// int ShowEx(FILE *ExF, Ex E); // Recursive call. (#) Already declared in AutoMath.h
+// int ShowEx(FILE *ExF, Ex E); // Recursive call. (@) Already declared in AutoMath.h
 
 static int ShowExs(FILE *ExF, List A, List B) {
    int N = 0;
@@ -39,7 +39,7 @@ int ShowEx(FILE *ExF, Ex E) {
       case DefK: N += fprintf(ExF, "/*"), N += PutSym(ExF, E), N += fprintf(ExF, "*/"); break;
       case TermK: {
          Term T = (Term)E;
-         N += PutSym(ExF, (Ex)T->Fun); //(#) Added the (Ex) typecast to the original.
+         N += PutSym(ExF, (Ex)T->Fun); //(@) Added the (Ex) typecast to the original.
          List B = NULL;
          switch (ArgK) {
             case 0: {

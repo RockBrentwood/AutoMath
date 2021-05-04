@@ -16,7 +16,7 @@
 %p	* tcon		:= --							; Proof(con)
 %tcon	* conelim	:= notnotelim(impintro(not,con,[tnot,Proof(not)]tcon)	; Proof(p)
 
-// The syntax in the local 2016 version.
+// The syntax in the 2016 version.
  @ prim type Prop;			// ↦ type Prop;
    var Prop A;
    prim type Proof;			// (Prop A) ↦ type Proof(A);

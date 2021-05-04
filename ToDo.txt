@@ -6,7 +6,7 @@ Extensions (both planned and envisioned):
 ∙	Prefix, infix and postfix syntax for affix operators, the same way that Prolog implements them;
 	(i.e. the fx/fy/xf/yf/xfx/xfy/yfx operator types with numeric precedence).
 	to allow for notation like C∧A, A ⊢ B, ¬B, instead of ∧(C,A), ⊢(A,B), ¬(B), etc.
-∙	Support for bracketing, itself, as an operator, similar to Prolog's
+∙	Support for bracketing, itself, as an operator, similar to Prolog's.
 ∙	Addition of product types (both tuples/lists).
 ∙	Support for deBruijn's "telescoping", in conjunction with multivariate abstractions and applications.
 ∙	Collating of declarations
