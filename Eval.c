@@ -44,7 +44,12 @@ bool Beta(Ex *EP) {
    Ex E = *EP; assert(E->Kind == AppK); App A = (App)E;
    Ex F = A->Fun;
    while (true) switch (F->Kind) {
-      case AbsK: goto Redex;
+      case AbsK:
+         assert(F->Kind == AbsK); Lam L = (Lam)F;
+         Yield();
+         if (Truncate && Ratio-- <= 0) { Exhausted(); return false; }
+         Betas++; *EP = SubstVar(A->Arg, L, L->Body);
+      return true;
       case AppK:
          if (!Beta(&F)) return false;
       break;
@@ -53,11 +58,6 @@ bool Beta(Ex *EP) {
       break;
       default: return false;
    }
-Redex:
-   assert(F->Kind == AbsK); Lam L = (Lam)F;
-   Yield();
-   if (Truncate && Ratio-- <= 0) { Exhausted(); return false; }
-   Betas++; *EP = SubstVar(A->Arg, L, L->Body); return true;
 }
 
 static bool Eta(Ex *EP) {
@@ -72,7 +72,13 @@ static bool Eta(Ex *EP) {
       case AppK: {
          App A = (App)F; Ex G = A->Arg;
          if (G->Kind == VarK) {
-            Var V = (Var)G; if (V->Bind == L && !Occurs(A->Fun, L)) goto Redex;
+            Var V = (Var)G;
+            if (V->Bind == L && !Occurs(A->Fun, L)) {
+               assert(F->Kind == AppK); App A = (App)F;
+               Yield();
+               if (Truncate && Ratio-- <= 0) { Exhausted(); return false; }
+               Etas++; *EP = A->Fun; return true;
+            }
          }
          if (!Beta(&F)) return false;
       }
@@ -82,11 +88,6 @@ static bool Eta(Ex *EP) {
       break;
       default: return false;
    }
-Redex:
-   assert(F->Kind == AppK); App A = (App)F;
-   Yield();
-   if (Truncate && Ratio-- <= 0) { Exhausted(); return false; }
-   Etas++; *EP = A->Fun; return true;
 }
 
 static void BegTrace(Ex D, Ex E, char *LastRed) {

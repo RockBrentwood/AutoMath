@@ -1,4 +1,4 @@
-/// A demonstration of the expanded syntax.
+// A demonstration of the expanded syntax.
 var type A;
 var type B;
 var type C;

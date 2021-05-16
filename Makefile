@@ -12,11 +12,11 @@ LN=ln -s -f
 O=.o
 X=
 OBJS=Syntax$O Lexical$O Allocate$O Id$O AutoMath$O Par$O St$O Value$O Ex$O Print$O Type$O Eval$O Check$O Excerpt$O
-BINDIR=$(HOME)/bin
+BINDIR=${HOME}/bin
 PROGRAM=./aut$X
 
-$(PROGRAM): ${OBJS}
-	${CC} ${CFLAGS} ${OBJS} -o $(PROGRAM)
+${PROGRAM}: ${OBJS}
+	${CC} ${CFLAGS} ${OBJS} -o ${PROGRAM}
 .c$O:
 	${CC} ${CFLAGS} -c $<
 Lexical$O: AutoMath.h
@@ -49,14 +49,14 @@ Lexical.c: Lexical0.c
 Syntax.c: Syntax0.c
 	${LN} Syntax0.c Syntax.c
 
-test: $(PROGRAM) GrundLagen.aut GrundLagenPn.aut
-	$(SH) Test.sh
-install: $(PROGRAM)
-	install -c -s $(PROGRAM) ${BINDIR}
+test: ${PROGRAM} GrundLagen.aut GrundLagenPn.aut
+	${SH} Test.sh
+install: ${PROGRAM}
+	install -c -s ${PROGRAM} ${BINDIR}
 small:
 #	rm -f y.tab.c y.tab.h y.output
 	rm -f *$O core
 clean: small
-	rm -f $(PROGRAM)
+	rm -f ${PROGRAM}
 	rm -f Lexical.c
 	rm -f Syntax.c

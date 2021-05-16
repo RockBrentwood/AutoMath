@@ -65,7 +65,7 @@ with the following constraints and definitions:
 	―	Id is a ‟type” for a ‟type” line
 	―	Id is an ‟object name” (including ‟bound variables”) for an Ex line.
 ∙	Ind: Lays out the branching structure of a definition tree with 0 the root.
-	―	Id must be the block opener of a previous line
+	―	x must be the block opener of a previous line
 
 Example:
 	0	a	PN	type

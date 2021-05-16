@@ -68,7 +68,7 @@ C@ var arr(sub(A, B), C) g; prim arr(A, add(B, C)) declo;	// g: A - B → C	⇒ 
 
 B@ var de(mul(B, A)) c; prim arr(B, no(A)) enno;	// c: B × A?	⇒ nc: B → ¬A
 B@ var ad(add(A, B)) c; prim arr(un(A), B) enun;	// c: A + B	⇒ cu: ~A → B
-B@ var arr(B, no(A)) f; prim de(mul(B, A)) deno;	// f: B → ¬A	⇒ uc: B × A?
+B@ var arr(B, no(A)) f; prim de(mul(B, A)) deno;	// f: B → ¬A	⇒ uf: B × A?
 B@ var arr(un(A), B) f; prim ad(add(A, B)) deun;	// f: ~A → B	⇒ fn: A + B.
 
 // f: C × A → B; g: C × B → A	⇒ ^(f,g): C → A≡B
