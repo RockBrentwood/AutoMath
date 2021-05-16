@@ -4,4 +4,4 @@ and compare Test.err with Test.out using
 	diff Test.err Test.out.
 
 As is the case for the tests in the main directory, both of these procedures will later be included in the Makefile under "make test";
-and both sets of tests may be later integrated into a single test quite.
+and both sets of tests may be later integrated into a single test suite.

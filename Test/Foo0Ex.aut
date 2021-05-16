@@ -1,6 +1,6 @@
 #! /local/bin/aut
 ## It is not very clear whether this book is correct according to the definition of Automath.
-## The "colored algorithm" of the Bruyn would accept it.
+## The "colored algorithm" of deBruin would accept it.
 ## It will not be considered correct by the checker.
   @ prim type S;
   @ var S s;
