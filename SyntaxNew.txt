@@ -76,7 +76,7 @@ They correspond to proof-conversion/optimization rules.
 The combination (α,β) is the pure Lambda calculus.
 The lambda calculus is ‟extensional” if it includes the η rule and is ‟applied” rather than ‟pure” if it includes the δ rule.
 
-Other systems, like Martin-Löf may include a ‟sum” type:
+Other systems, like Martin-Löf, may include a ‟sum” type:
 	(Σ T x) U_x	↔	(∃x ∈ T) U_x
 	(Σ T x) U	↔	T ∧ U, when U is independent of x
 populated by expressions of the form (e,f), where e has type T, and f has type U_e (or type U, if U is independent of x).
