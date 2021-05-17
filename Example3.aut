@@ -108,7 +108,7 @@ B@ var [C x: arr(A<x>, B<x>)] f; var C c; def arr(A<c>, B<c>) subst = f<c>;
 //	f_x = g_x ^, g_x = f_x v, g_x ^ v = g_x, f_x v ^ = f_x
 // But then, assuming F = (κx: 1 → B) f_x and G = (κx: 1 → B) g_x, this yields the types
 //	F: C × B → A + D, G: (C - A) × B → D
-// But these are not generally equivalent in a biHeyting logic. In particular, for linear orderings with 0 < b ≤ a < 1, one has
+// But these are not generally equivalent in a bi-Heyting logic. In particular, for linear orderings with 0 < b ≤ a < 1, one has
 //	A = a, B = b, C = 1, D = 0
 //	C × B = 1 × b = b; A + D = a + 0 = a; so F: C × B → A + D is true
 //	(C - A) × B = 1 × b = b, D = 0; so G: (C - A) × B → D is false.
