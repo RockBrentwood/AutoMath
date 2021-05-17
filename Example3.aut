@@ -22,7 +22,7 @@
 // The β-rule is that [T x: ‹…x…›]<B> = ‹…B…›, provided that ‹B› has type T and that none of B's free variables become bound in ‹…B…›.
 // The η-rule is that [T x: A<x>] = A, provided that x is not a free variable in A.
 
-// The following is mostly superseded by Quant.aut.
+// The following is mostly superseded by CatLog.aut.
 
 // An attempt to embody an extended version of the Lambek-Scott category-theoretic treatment of the Curry-Howard correspondence
 // within the framework of AutoMath. The extension includes assertions and queries,
