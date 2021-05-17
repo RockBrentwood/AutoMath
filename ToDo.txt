@@ -25,7 +25,7 @@ Extensions (both planned and envisioned):
 ∙	Operator overloading.
 ∙	Type inheritance/inclusion hierarchy: because deBruijn kept calling for it in his references.
 ∙	Inclusion of a "typeof" primitive that works consistently with the type inheritance/inclusion;
-	because deBruijn called out the gap created by its absence (in his example code) and effectively called for its conclusion by virtue of this.
+	because deBruijn called out the gap created by its absence (in his example code) and effectively called for its inclusion by virtue of this.
 ∙	Expansion of "paragraphs" into full-fledged modules, with "public" and "private" access for the components of a module.
 ∙	Separation of the "compilation" and "linking" phases.
 ∙	A "conjecture"/"lemma" line = a "definition" line without a defining expression -
