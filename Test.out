@@ -1,7 +1,7 @@
 ./aut -QZ GrundLagen
 8583 beta reduction(s), 20003 delta reduction(s), 2 eta reduction(s)
 32 + 6880 = 6912 definitions, 4298 + 6912 = 11210 lines
-98 blocks = 3133 kilobytes
+194 blocks = 6205 kilobytes
 0 seconds = 0 minutes 0 seconds
 AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
 
@@ -15,7 +15,7 @@ AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
 ./aut -QZ CatLog
 18 beta reduction(s), 94 delta reduction(s), 0 eta reduction(s)
 32 + 108 = 140 definitions, 61 + 140 = 201 lines
-1 blocks = 32 kilobytes
+2 blocks = 64 kilobytes
 0 seconds = 0 minutes 0 seconds
 AutoMath 4.3, (c) 1997 by satan software; (c) 2016,2021 Darth Ninja
 

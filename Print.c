@@ -65,7 +65,7 @@ int ShowEx(FILE *ExF, Ex E) {
       break;
       case AbsK: {
          Lam L = (Lam)E; char *Id = L->Id;
-         if (DoI) N += fprintf(ExF, "/*%08x*/", (unsigned)E);
+         if (DoI) N += fprintf(ExF, "/*%08lx*/", (unsigned long)E);
          N += fprintf(ExF, "["), N += ShowEx(ExF, L->Type), N += fprintf(ExF, " %s: ", Id);
          char *ExVal = GetId(Id);
          SetId(Id, (char *)NULL), N += ShowEx(ExF, L->Body), SetId(Id, ExVal);
@@ -74,7 +74,7 @@ int ShowEx(FILE *ExF, Ex E) {
       break;
       case VarK: {
          Var V = (Var)E;
-         if (DoI) N += fprintf(ExF, "/*%08x*/", (unsigned)V->Bind);
+         if (DoI) N += fprintf(ExF, "/*%08lx*/", (unsigned long)V->Bind);
          N += fprintf(ExF, "%s", V->Bind->Id);
       }
       break;
